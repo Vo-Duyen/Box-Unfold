@@ -72,12 +72,9 @@ namespace LongNC.Cube
             rotate = newRotate;
             DOVirtual.Float(0, 1, timeMove, param =>
             {
-                target.transform.RotateAround(rotateCenter, rotateAxis, 180 * Time.deltaTime);
-            }).OnComplete(() =>
-            {
-                target.rotation = Quaternion.Euler(newRotate);
+                target.transform.RotateAround(rotateCenter, rotateAxis, 90 / timeMove * Time.deltaTime);
             });
-            target.transform.DOLocalMove(curPosition, timeMove);
+            target.transform.DOLocalMove(curPosition, timeMove).SetEase(Ease.Linear);
         }
     }
 }

@@ -40,11 +40,18 @@ namespace LongNC.Cube
         public void CheckMove()
         {
             // TODO: Fix late
-            
-            // z min la day va noi khong di chuyen
-
             if (_coroutine == null)
             {
+                var bestSquare = transform.GetChild(0);
+                for (var i = 1; i < transform.childCount; ++i)
+                {
+                    var trans = transform.GetChild(i);
+                    if (trans.position.z > bestSquare.position.z)
+                    {
+                        bestSquare = trans;
+                    }
+                }
+                bestSquare.SetParent(transform.parent);
                 _coroutine = StartCoroutine(IEDelay(_timeMove, () =>
                 {
                     var direction = _movement.GetDirection(_posMouseDown, _posMouseUp);

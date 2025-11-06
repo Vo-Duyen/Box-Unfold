@@ -452,7 +452,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1950546680
 Transform:
   m_ObjectHideFlags: 0
@@ -592,6 +592,7 @@ MonoBehaviour:
   _curLevelData: {fileID: 11400000, guid: 420f8318116c7c847b0178f055c52f83, type: 2}
   _cubePrefab: {fileID: 7254163321501012526, guid: c4ddcfc12ca19a04d9f9ec2b634ce5d4, type: 3}
   _wallPrefab: {fileID: 2031460609633348528, guid: fcce671f11c5fb34a89abdefc8cf8d5a, type: 3}
+  _backgroundPrefab: {fileID: 2468594237604981113, guid: f94bf1afef3e91f458bf4b4c574a13d5, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

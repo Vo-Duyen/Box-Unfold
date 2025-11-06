@@ -42,6 +42,10 @@ namespace LongNC.Manager
         [SerializeField]
         private GameObject _wallPrefab;
         
+        [FoldoutGroup(CurLevelString)]
+        [SerializeField]
+        private GameObject _backgroundPrefab;
+        
         private readonly ILevelLoader _levelLoader = new LevelLoader();
         
         [Button]
@@ -63,7 +67,7 @@ namespace LongNC.Manager
         [Button]
         public void LoadAllObjInLevel()
         {
-            var curLevelObj = new GameObject(name: $"Level{_curLevelData}")
+            var curLevelObj = new GameObject(name: $"{_curLevelData.name}")
             {
                 transform =
                 {
@@ -83,7 +87,15 @@ namespace LongNC.Manager
             {
                 transform =
                 {
-                    parent = TF
+                    parent = curLevelObj.transform
+                }
+            };
+
+            var backgroundObj = new GameObject(name: "Background")
+            {
+                transform =
+                {
+                    parent = curLevelObj.transform
                 }
             };
 
@@ -93,18 +105,22 @@ namespace LongNC.Manager
             {
                 for (var j = 0; j < grid.GetLength(1); ++j)
                 {
+                    var posCell = new Vector3((i - grid.GetLength(0) / 2f) * 1f, (grid.GetLength(1) / 2f - j) * 1f);
                     switch (grid[i, j])
                     {
                         case CellType.Ban:
+                            PoolingManager.Spawn(_backgroundPrefab, posCell, Quaternion.Euler(-90f, 0f, 0f), backgroundObj.transform);
                             break;
                         case CellType.Active:
                             break;
                         case CellType.Inactive:
-                            PoolingManager.Spawn(_wallPrefab, Vector3.back * 0.1f, Quaternion.identity,
+                            posCell.z = 0.1f;
+                            PoolingManager.Spawn(_wallPrefab, posCell, Quaternion.Euler(-90f, 0f, 0f),
                                 wallObj.transform);
                             break;
                         case CellType.Cube:
-                            PoolingManager.Spawn(_cubePrefab, Vector3.zero, Quaternion.identity, cubeObj.transform);
+                            posCell.z = -0.5f;
+                            PoolingManager.Spawn(_cubePrefab, posCell, Quaternion.identity, cubeObj.transform);
                             break;
                     }
                 }
