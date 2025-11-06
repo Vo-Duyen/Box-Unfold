@@ -22,24 +22,47 @@ namespace LongNC.Data
         
 #if UNITY_EDITOR
         [BoxGroup(SetupString)]
-        [TableMatrix]
+        [TableMatrix(Transpose = true)]
 #endif
         public CellType[, ] gridCells = new CellType[1, 1];
+
+        [BoxGroup(SetupString)]
+        public (int, int) lengthBackground = (40, 20);
+        
+        [BoxGroup(SetupString)]
+        public int cntCheckWinLevel;
         
 #if UNITY_EDITOR
         [FoldoutGroup(GridString)]
         [OdinSerialize]
-        private int _rows = 6;
+        private int _rows;
         
         [FoldoutGroup(GridString)]
         [OdinSerialize]
-        private int _columns = 5;
+        private int _columns;
         
         [FoldoutGroup(GridString)]
         [Button]
         private void SetupGrid()
         {
-            gridCells = new CellType[_columns, _rows];
+            gridCells = new CellType[_rows, _columns];
+        }
+
+        [FoldoutGroup(GridString)]
+        [Button]
+        private void GetCntCheckWinLevel()
+        {
+            cntCheckWinLevel = 0;
+            for (var i = 0; i < gridCells.GetLength(0); ++i)
+            {
+                for (var j = 0; j < gridCells.GetLength(1); ++j)
+                {
+                    if (gridCells[i, j] == CellType.Inactive)
+                    {
+                        ++cntCheckWinLevel;
+                    }
+                }
+            }
         }
 #endif
     }

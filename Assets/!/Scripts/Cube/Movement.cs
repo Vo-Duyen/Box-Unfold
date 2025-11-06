@@ -1,5 +1,7 @@
-﻿using System.Globalization;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace LongNC.Cube
@@ -10,14 +12,16 @@ namespace LongNC.Cube
         Down,
         Left,
         Right,
+        None,
     }
-    
+
     public interface IMovement
     {
         Direction GetDirection(Vector3 posClickDown, Vector3 posClickUp);
-        void Move(Transform target, ref Vector3 rotate, Direction direction, float distance, float timeMove);
+        Direction[] GetDirections(Transform target);
+        void Move(Transform target, Direction direction, float distance, float timeMove);
     }
-    
+
     public class Movement : IMovement
     {
         public Direction GetDirection(Vector3 posClickDown, Vector3 posClickUp)
@@ -32,8 +36,45 @@ namespace LongNC.Cube
                 return distance.y > 0 ? Direction.Up : Direction.Down;
             }
         }
-        
-        public void Move(Transform target, ref Vector3 rotate, Direction direction, float distance, float timeMove)
+
+        public Direction[] GetDirections(Transform target)
+        {
+            var res = new List<Direction>();
+            for (var i = 0; i < target.childCount; ++i)
+            {
+                var direct = target.GetChild(i).position - target.position;
+                direct = direct.normalized;
+                if (Mathf.Abs(direct.x) > 0.7f) direct.x = direct.x > 0 ? 1 : -1;
+                else direct.x = 0;
+                if (Mathf.Abs(direct.y) > 0.7f) direct.y = direct.y > 0 ? 1 : -1;
+                else direct.y = 0;
+                if (Mathf.Abs(direct.z) > 0.7f) direct.z = direct.z > 0 ? 1 : -1;
+                else direct.z = 0;
+
+                if (direct == Vector3.back)
+                {
+                    return null;
+                }
+
+                var childRes = direct switch
+                {
+                    var d when d == Vector3.left => Direction.Left,
+                    var d when d == Vector3.right => Direction.Right,
+                    var d when d == Vector3.up => Direction.Up,
+                    var d when d == Vector3.down => Direction.Down,
+                    _ => Direction.None
+                };
+
+                if (childRes != Direction.None)
+                {
+                    res.Add(childRes);
+                }
+            }
+
+            return res.ToArray();
+        }
+
+        public void Move(Transform target, Direction direction, float distance, float timeMove)
         {
             var curPosition = target.transform.localPosition;
             var direct = Vector3.zero;
@@ -65,15 +106,25 @@ namespace LongNC.Cube
             var rotateCenter = target.position + direct / 2 + Vector3.down / 2;
             rotateAxis = Vector3.Cross(rotateAxis, direct);
 
-            var newRotate = Vector3.zero;
-            newRotate.x = Mathf.RoundToInt(rotateAxis.x);
-            newRotate.y = Mathf.RoundToInt(rotateAxis.y);
-            newRotate.z = Mathf.RoundToInt(rotateAxis.z);
-            rotate = newRotate;
-            DOVirtual.Float(0, 1, timeMove, param =>
-            {
-                target.transform.RotateAround(rotateCenter, rotateAxis, 90 / timeMove * Time.deltaTime);
-            });
+            DOVirtual.Float(0, 1, timeMove,
+                    param =>
+                    {
+                        target.transform.RotateAround(rotateCenter, rotateAxis, 90 / timeMove * Time.deltaTime);
+                    })
+                .OnComplete(() =>
+                {
+                    var curRotate = target.transform.localRotation.eulerAngles;
+                    curRotate.x = (curRotate.x > 0 ? 1 : -1) * (Mathf.Abs(curRotate.x) > 5
+                        ? ((int)(Mathf.Abs(curRotate.x) + 5) / 10) * 10
+                        : ((int)Mathf.Abs(curRotate.x) / 10) * 10);
+                    curRotate.y = (curRotate.y > 0 ? 1 : -1) * (Mathf.Abs(curRotate.y) > 5
+                        ? ((int)(Mathf.Abs(curRotate.y) + 5) / 10) * 10
+                        : ((int)Mathf.Abs(curRotate.y) / 10) * 10);
+                    curRotate.z = (curRotate.z > 0 ? 1 : -1) * (Mathf.Abs(curRotate.z) > 5
+                        ? ((int)(Mathf.Abs(curRotate.z) + 5) / 10) * 10
+                        : ((int)Mathf.Abs(curRotate.z) / 10) * 10);
+                    target.transform.localRotation = Quaternion.Euler(curRotate);
+                });
             target.transform.DOLocalMove(curPosition, timeMove).SetEase(Ease.Linear);
         }
     }

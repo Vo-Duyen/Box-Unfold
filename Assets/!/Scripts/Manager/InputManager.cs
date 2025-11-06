@@ -17,28 +17,34 @@ namespace LongNC.Cube
         private bool _isCanControl;
         
         private bool _isDragging;
-        private CubeManager _cubeManager;
+        private CubeManager _cubeManager; 
+        private RaycastHit[] _hits = new RaycastHit[10];
         
         public Transform GetCube()
         {
+            var ans = transform;
+            ans = null;
             if (Camera.main == null)
             {
                 Debug.LogWarning("No Main Camera");
                 return null;
             }
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            var hits = new RaycastHit[10];
-            var size = Physics.RaycastNonAlloc(ray, hits, Mathf.Infinity);
+            var size = Physics.RaycastNonAlloc(ray, _hits, Mathf.Infinity);
             
-            for (var i = 0; i < Mathf.Min(size, hits.Length); ++ i)
+            for (var i = 0; i < Mathf.Min(size, _hits.Length); ++ i)
             {
-                var hit = hits[i];
+                var hit = _hits[i];
                 if (hit.transform.TryGetComponent<CubeManager>(out var cubeManager))
                 {
-                    return hit.transform;
+                    ans = hit.transform;
+                    break;
                 }
             }
-            return null;
+
+            _hits = new RaycastHit[10];
+            
+            return ans;
         }
 
         [Button]
@@ -49,11 +55,12 @@ namespace LongNC.Cube
 
         private void Update()
         {
-            if (_isCanControl)
-            {
+            // if (_isCanControl)
+            // {
                 if (Input.GetMouseButtonDown(0) && !_isDragging)
                 {
                     var cube = GetCube();
+                    // Debug.Log(cube.name);
                     if (cube == null)
                     {
                         return;
@@ -63,6 +70,7 @@ namespace LongNC.Cube
                     
                     _cubeManager = cube.GetComponent<CubeManager>();
                     _cubeManager.OnClickDown();
+                    _cubeManager.CheckMove(false);
                 }
                 else if (Input.GetMouseButtonUp(0) && _isDragging)
                 {
@@ -70,7 +78,7 @@ namespace LongNC.Cube
                     _cubeManager.OnClickUp();
                     _cubeManager.CheckMove();
                 }
-            }
+            // }
         }
     }
 }

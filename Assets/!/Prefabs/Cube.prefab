@@ -447,7 +447,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5453652316332096203
 Transform:
   m_ObjectHideFlags: 0
@@ -483,6 +483,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _timeMove: 0.2
   _distance: 1
+  _collider: {fileID: 3153424047071310439}
 --- !u!65 &3153424047071310439
 BoxCollider:
   m_ObjectHideFlags: 0
