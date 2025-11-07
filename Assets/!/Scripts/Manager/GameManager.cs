@@ -39,14 +39,14 @@ namespace LongNC.Manager
             InputManager.Instance.SetIsCanControl(false);
             if (timeDelay == 0f)
             {
-                UIManager.Instance.PanelLose();
+                // UIManager.Instance.PanelLose();
             }
             else
             {
                 StartCoroutine(IEDelay(timeDelay, () =>
                 {
                     Debug.LogWarning("Lose level!");
-                    UIManager.Instance.PanelLose();
+                    // UIManager.Instance.PanelLose();
                 }));
             }
         }

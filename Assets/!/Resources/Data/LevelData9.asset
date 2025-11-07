@@ -26,10 +26,10 @@ MonoBehaviour:
       Data: 0|LongNC.Data.CellType[,], Assembly-CSharp
     - Name: 
       Entry: 12
-      Data: 56
+      Data: 64
     - Name: ranks
       Entry: 1
-      Data: 7|8
+      Data: 8|8
     - Name: 
       Entry: 3
       Data: 0
@@ -111,6 +111,30 @@ MonoBehaviour:
     - Name: 
       Entry: 3
       Data: 1
+    - Name: 
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 3
+      Data: 0
     - Name: 
       Entry: 3
       Data: 1
@@ -219,8 +243,8 @@ MonoBehaviour:
       Data: 
     - Name: _rows
       Entry: 3
-      Data: 7
+      Data: 8
     - Name: _columns
       Entry: 3
       Data: 8
-  cntCheckWinLevel: 8
+  cntCheckWinLevel: 10
