@@ -1,26 +1,25 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
+using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using UnityEngine;
 
 namespace LongNC.UI.Panel
 {
-     public abstract class BaseUIPanel : MonoBehaviour
+    [RequireComponent(typeof(CanvasGroup))]
+     public abstract class BaseUIPanel : SerializedMonoBehaviour
     {
-        [SerializeField] protected CanvasGroup _canvasGroup;
-        [SerializeField] protected float _fadeTime = 0.3f;
-        [SerializeField] protected bool _hideOnStart = true;
-        
+        [Title("Core")]
+        [OdinSerialize] 
+        protected CanvasGroup canvasGroup;
+        [OdinSerialize] 
+        protected float fadeTime = 0.3f;
+        [OdinSerialize] 
+        protected bool hideOnStart = true;
+
         protected virtual void Awake()
         {
-            if (_canvasGroup == null)
-            {
-                _canvasGroup = GetComponent<CanvasGroup>();
-                if (_canvasGroup == null)
-                {
-                    _canvasGroup = gameObject.AddComponent<CanvasGroup>();
-                }
-            }
-            
-            if (_hideOnStart)
+            if (hideOnStart)
             {
                 Hide(true);
             }
@@ -32,18 +31,18 @@ namespace LongNC.UI.Panel
             
             if (immediate)
             {
-                _canvasGroup.alpha = 1f;
-                _canvasGroup.interactable = true;
-                _canvasGroup.blocksRaycasts = true;
+                canvasGroup.alpha = 1f;
+                canvasGroup.interactable = true;
+                canvasGroup.blocksRaycasts = true;
                 OnShowComplete();
             }
             else
             {
-                _canvasGroup.DOKill();
-                _canvasGroup.DOFade(1f, _fadeTime).OnComplete(() =>
+                canvasGroup.DOKill();
+                canvasGroup.DOFade(1f, fadeTime).OnComplete(() =>
                 {
-                    _canvasGroup.interactable = true;
-                    _canvasGroup.blocksRaycasts = true;
+                    canvasGroup.interactable = true;
+                    canvasGroup.blocksRaycasts = true;
                     OnShowComplete();
                 });
             }
@@ -53,19 +52,19 @@ namespace LongNC.UI.Panel
         
         public virtual void Hide(bool immediate = false)
         {
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
             
             if (immediate)
             {
-                _canvasGroup.alpha = 0f;
+                canvasGroup.alpha = 0f;
                 gameObject.SetActive(false);
                 OnHideComplete();
             }
             else
             {
-                _canvasGroup.DOKill();
-                _canvasGroup.DOFade(0f, _fadeTime).OnComplete(() =>
+                canvasGroup.DOKill();
+                canvasGroup.DOFade(0f, fadeTime).OnComplete(() =>
                 {
                     gameObject.SetActive(false);
                     OnHideComplete();
@@ -79,5 +78,13 @@ namespace LongNC.UI.Panel
         protected virtual void OnShowComplete() { }
         protected virtual void OnHide() { }
         protected virtual void OnHideComplete() { }
+
+#if UNITY_EDITOR
+        [Button]
+        protected virtual void Setup()
+        {
+            canvasGroup = GetComponent<CanvasGroup>();
+        }
+#endif        
     }
 }

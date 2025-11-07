@@ -13,8 +13,6 @@
         
         // Gameplay Events
         OnTimeChanged,
-        OnMoveCountChanged,
-        OnScoreChanged,
         
         // Button Events
         OnPlayButtonClicked,
@@ -22,7 +20,6 @@
         OnResumeButtonClicked,
         OnRestartButtonClicked,
         OnNextLevelButtonClicked,
-        OnHomeButtonClicked,
         OnCloseButtonClicked,
     }
 }

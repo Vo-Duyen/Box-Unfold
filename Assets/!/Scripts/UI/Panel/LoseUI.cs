@@ -29,17 +29,11 @@ namespace LongNC.UI.Panel
         private void SetupButtons()
         {
             retryButton?.onClick.AddListener(OnRetryClicked);
-            homeButton?.onClick.AddListener(OnHomeClicked);
         }
         
         private void OnRetryClicked()
         {
             Observer.PostEvent(UIEventID.OnRestartButtonClicked);
-        }
-        
-        private void OnHomeClicked()
-        {
-            Observer.PostEvent(UIEventID.OnHomeButtonClicked);
         }
         
         protected override void OnShow()

@@ -2,6 +2,8 @@
 using DG.Tweening;
 using LongNC.Data;
 using LongNC.UI.Data;
+using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,13 +12,17 @@ namespace LongNC.UI.Panel
 {
      public class WinUI : BaseUIPanel
     {
-        [Header("Display")]
-        [SerializeField] private TextMeshProUGUI _titleText;
-        [SerializeField] private TextMeshProUGUI _levelText;
+        [Title("Display")]
+        [OdinSerialize] 
+        private TextMeshProUGUI _titleText;
+        [OdinSerialize] 
+        private TextMeshProUGUI _levelText;
         
-        [Header("Buttons")]
-        [SerializeField] private Button _nextLevelButton;
-        [SerializeField] private Button _restartButton;
+        [Title("Buttons")]
+        [OdinSerialize] 
+        private Button _nextLevelButton;
+        [OdinSerialize] 
+        private Button _restartButton;
         
         private ObserverManager<UIEventID> Observer => ObserverManager<UIEventID>.Instance;
         
@@ -25,7 +31,9 @@ namespace LongNC.UI.Panel
             base.Awake();
             SetupButtons();
         }
-        
+
+        #region SetupButtons
+
         private void SetupButtons()
         {
             _nextLevelButton?.onClick.AddListener(OnNextLevelClicked);
@@ -42,15 +50,12 @@ namespace LongNC.UI.Panel
             Observer.PostEvent(UIEventID.OnRestartButtonClicked);
         }
         
-        private void OnHomeClicked()
-        {
-            Observer.PostEvent(UIEventID.OnHomeButtonClicked);
-        }
+        #endregion
         
         protected override void OnShow()
         {
             transform.localScale = Vector3.zero;
-            transform.DOScale(Vector3.one, _fadeTime).SetEase(Ease.OutBack);
+            transform.DOScale(Vector3.one, fadeTime).SetEase(Ease.OutBack);
             
             _titleText.transform.localScale = Vector3.zero;
             _titleText.transform.DOScale(Vector3.one, 0.5f)

@@ -9,8 +9,6 @@ namespace LongNC.UI.Manager
 {
     public class UIManager : Singleton<UIManager>
     {
-        public static UIManager Instance { get; private set; }
-        
         [Header("UI Panels")]
         [SerializeField] private GameplayUI _gameplayUI;
         [SerializeField] private PauseUI _pauseUI;

@@ -26,7 +26,6 @@ namespace LongNC.UI.Panel
         {
             _resumeButton?.onClick.AddListener(OnResumeClicked);
             _restartButton?.onClick.AddListener(OnRestartClicked);
-            _homeButton?.onClick.AddListener(OnHomeClicked);
             _closeButton?.onClick.AddListener(OnCloseClicked);
         }
         
@@ -40,11 +39,6 @@ namespace LongNC.UI.Panel
             Observer.PostEvent(UIEventID.OnRestartButtonClicked);
         }
         
-        private void OnHomeClicked()
-        {
-            Observer.PostEvent(UIEventID.OnHomeButtonClicked);
-        }
-        
         private void OnCloseClicked()
         {
             Observer.PostEvent(UIEventID.OnCloseButtonClicked);
@@ -53,7 +47,7 @@ namespace LongNC.UI.Panel
         protected override void OnShow()
         {
             transform.localScale = Vector3.zero;
-            transform.DOScale(Vector3.one, _fadeTime).SetEase(Ease.OutBack);
+            transform.DOScale(Vector3.one, fadeTime).SetEase(Ease.OutBack);
         }
     }
 }

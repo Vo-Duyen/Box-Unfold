@@ -2,6 +2,7 @@
 using System.Net.NetworkInformation;
 using DesignPattern;
 using DesignPattern.ObjectPool;
+using DG.Tweening;
 using LongNC.Cube;
 using LongNC.Data;
 using Sirenix.OdinInspector;
@@ -26,6 +27,8 @@ namespace LongNC.Manager
     public class LevelManager : Singleton<LevelManager>
     {
         private const string CurLevelString = "Current Level";
+
+        [SerializeField] private Transform _camera;
 
         private Transform TF => transform;
         
@@ -135,6 +138,25 @@ namespace LongNC.Manager
             _cntCheckWinLevel = _curLevelData.cntCheckWinLevel;
             
             var grid = _curLevelData.gridCells;
+
+            var xLength = -1f;
+            
+            // TODO: Camera
+            if (grid.GetLength(1) % 2 == 0)
+            {
+                xLength = -0.5f;
+            }
+            else
+            {
+                xLength = -1;
+            }
+
+            var pos = _camera.position;
+            pos.x = xLength;
+
+            _camera.DOMove(pos, 0.2f).SetEase(Ease.Linear);
+            
+            
             _gridClone = (CellType[, ]) grid.Clone();
             var lengthBackground = _curLevelData.lengthBackground;
             var startSpawn = ((lengthBackground.Item1 - grid.GetLength(0)) / 2,

@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace LongNC.Cube
@@ -79,6 +77,7 @@ namespace LongNC.Cube
             var curPosition = target.transform.localPosition;
             var direct = Vector3.zero;
             var rotateAxis = Vector3.zero;
+            
             switch (direction)
             {
                 case Direction.Up:
@@ -106,26 +105,40 @@ namespace LongNC.Cube
             var rotateCenter = target.position + direct / 2 + Vector3.down / 2;
             rotateAxis = Vector3.Cross(rotateAxis, direct);
 
-            DOVirtual.Float(0, 1, timeMove,
-                    param =>
-                    {
-                        target.transform.RotateAround(rotateCenter, rotateAxis, 90 / timeMove * Time.deltaTime);
-                    })
-                .OnComplete(() =>
-                {
-                    var curRotate = target.transform.localRotation.eulerAngles;
-                    curRotate.x = (curRotate.x > 0 ? 1 : -1) * (Mathf.Abs(curRotate.x) > 5
-                        ? ((int)(Mathf.Abs(curRotate.x) + 5) / 10) * 10
-                        : ((int)Mathf.Abs(curRotate.x) / 10) * 10);
-                    curRotate.y = (curRotate.y > 0 ? 1 : -1) * (Mathf.Abs(curRotate.y) > 5
-                        ? ((int)(Mathf.Abs(curRotate.y) + 5) / 10) * 10
-                        : ((int)Mathf.Abs(curRotate.y) / 10) * 10);
-                    curRotate.z = (curRotate.z > 0 ? 1 : -1) * (Mathf.Abs(curRotate.z) > 5
-                        ? ((int)(Mathf.Abs(curRotate.z) + 5) / 10) * 10
-                        : ((int)Mathf.Abs(curRotate.z) / 10) * 10);
-                    target.transform.localRotation = Quaternion.Euler(curRotate);
-                });
+            var initialRotation = target.rotation;
+            var initialPosition = target.position;
+
+            float previousAngle = 0f;
+            
+            DOVirtual.Float(0, 90f, timeMove, currentAngle =>
+            {
+                float deltaAngle = currentAngle - previousAngle;
+                
+                target.RotateAround(rotateCenter, rotateAxis, deltaAngle);
+                
+                previousAngle = currentAngle;
+            })
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                var curRotate = target.transform.localRotation.eulerAngles;
+                curRotate.x = RoundToNearest10(curRotate.x);
+                curRotate.y = RoundToNearest10(curRotate.y);
+                curRotate.z = RoundToNearest10(curRotate.z);
+                target.transform.localRotation = Quaternion.Euler(curRotate);
+                
+                target.transform.localPosition = curPosition;
+            });
+
             target.transform.DOLocalMove(curPosition, timeMove).SetEase(Ease.Linear);
+        }
+
+        private float RoundToNearest10(float angle)
+        {
+            angle = angle % 360f;
+            if (angle < 0) angle += 360f;
+            
+            return Mathf.Round(angle / 10f) * 10f;
         }
     }
 }

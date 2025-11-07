@@ -50,7 +50,6 @@ namespace LongNC.UI.Panel
         private void SetupButtons()
         {
             pauseButton?.onClick.AddListener(OnPauseClicked);
-            homeButton?.onClick.AddListener(OnHomeClicked);
         }
         
         private void RegisterEvents()
@@ -168,11 +167,6 @@ namespace LongNC.UI.Panel
         private void OnPauseClicked()
         {
             Observer.PostEvent(UIEventID.OnPauseButtonClicked);
-        }
-        
-        private void OnHomeClicked()
-        {
-            Observer.PostEvent(UIEventID.OnHomeButtonClicked);
         }
         
         #endregion
