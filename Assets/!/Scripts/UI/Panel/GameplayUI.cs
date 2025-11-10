@@ -1,9 +1,12 @@
-﻿using DesignPattern.Observer;
+﻿using System;
+using DesignPattern.Observer;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using LongNC.UI.Data;
+using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 
 namespace LongNC.UI.Panel
 {
@@ -16,9 +19,19 @@ namespace LongNC.UI.Panel
         [SerializeField] private TextMeshProUGUI moveCountText;
         [SerializeField] private Image timeBarFill;
         
-        [Header("Buttons")]
-        [SerializeField] private Button pauseButton;
-        [SerializeField] private Button homeButton;
+        [Title("Buttons")]
+        [OdinSerialize]
+        private Button _restartButton;
+        [OdinSerialize]
+        private Button _helpButton;
+        [OdinSerialize]
+        private Button _settingButton;
+        
+        
+        [OdinSerialize]
+        private Button _pauseButton;
+        [OdinSerialize] 
+        private Button _homeButton;
         
         [Header("Time Warning")]
         [SerializeField] private Color normalTimeColor = Color.white;
@@ -27,21 +40,19 @@ namespace LongNC.UI.Panel
         [SerializeField] private float warningThreshold = 30f;
         [SerializeField] private float dangerThreshold = 10f;
         
-        private ObserverManager<UIEventID> Observer => ObserverManager<UIEventID>.Instance;
         private Tween timeWarningTween;
         
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
             SetupButtons();
         }
-        
-        private void Start()
+
+        private void OnEnable()
         {
             RegisterEvents();
         }
         
-        private void OnDestroy()
+        private void OnDisable()
         {
             UnregisterEvents();
             timeWarningTween?.Kill();
@@ -49,7 +60,11 @@ namespace LongNC.UI.Panel
         
         private void SetupButtons()
         {
-            pauseButton?.onClick.AddListener(OnPauseClicked);
+            _restartButton?.onClick.AddListener(OnRestartClicked);
+            _helpButton?.onClick.AddListener(OnHelpClicked);
+            _settingButton?.onClick.AddListener(OnSettingClicked);
+            
+            _pauseButton?.onClick.AddListener(OnPauseClicked);
         }
         
         private void RegisterEvents()
@@ -63,6 +78,30 @@ namespace LongNC.UI.Panel
             Observer.RemoveEvent(UIEventID.OnTimeChanged, OnTimeChanged);
             Observer.RemoveEvent(UIEventID.OnLevelUp, OnLevelUp);
         }
+        
+        #region Button Handlers
+
+        private void OnRestartClicked()
+        {
+            Observer.PostEvent(UIEventID.OnRestartClicked);
+        }
+        
+        private void OnHelpClicked()
+        {
+            Observer.PostEvent(UIEventID.OnHelpClicked);
+        }
+        
+        private void OnSettingClicked()
+        {
+            Observer.PostEvent(UIEventID.OnSettingClicked);
+        }
+        
+        private void OnPauseClicked()
+        {
+            Observer.PostEvent(UIEventID.OnPauseButtonClicked);
+        }
+        
+        #endregion
         
         #region Event Handlers
         
@@ -162,14 +201,6 @@ namespace LongNC.UI.Panel
         
         #endregion
         
-        #region Button Handlers
-        
-        private void OnPauseClicked()
-        {
-            Observer.PostEvent(UIEventID.OnPauseButtonClicked);
-        }
-        
-        #endregion
         
         public void UpdateLevel(int level)
         {

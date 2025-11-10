@@ -18,11 +18,9 @@ namespace LongNC.UI.Panel
         [SerializeField] private Button retryButton;
         [SerializeField] private Button homeButton;
         
-        private ObserverManager<UIEventID> Observer => ObserverManager<UIEventID>.Instance;
         
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
             SetupButtons();
         }
         

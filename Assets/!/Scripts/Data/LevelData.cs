@@ -25,9 +25,6 @@ namespace LongNC.Data
         [TableMatrix(Transpose = true)]
 #endif
         public CellType[, ] gridCells = new CellType[1, 1];
-
-        [BoxGroup(SetupString)]
-        public (int, int) lengthBackground = (40, 20);
         
         [BoxGroup(SetupString)]
         public int cntCheckWinLevel;

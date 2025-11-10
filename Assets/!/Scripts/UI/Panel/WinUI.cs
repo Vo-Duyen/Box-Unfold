@@ -24,11 +24,9 @@ namespace LongNC.UI.Panel
         [OdinSerialize] 
         private Button _restartButton;
         
-        private ObserverManager<UIEventID> Observer => ObserverManager<UIEventID>.Instance;
         
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
             SetupButtons();
         }
 

@@ -144,5 +144,10 @@ namespace LongNC.Manager
 
             action?.Invoke();
         }
+
+        public void TestClick()
+        {
+            Debug.Log("Test click");
+        }
     }
 }

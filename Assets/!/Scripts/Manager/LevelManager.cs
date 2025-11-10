@@ -111,23 +111,18 @@ namespace LongNC.Manager
                 }
             };
 
+            // Spawn background
+            PoolingManager.Spawn(_backgroundPrefab, Vector3.back * 0.2f, Quaternion.identity, curLevelObj.transform);
+            
             var cubeObj = new GameObject(name: "Cubes")
             {
                 transform =
                 {
-                    parent = curLevelObj.transform
+                    parent = curLevelObj.transform,
                 }
             };
 
             var wallObj = new GameObject(name: "Walls")
-            {
-                transform =
-                {
-                    parent = curLevelObj.transform
-                }
-            };
-
-            var backgroundObj = new GameObject(name: "Background")
             {
                 transform =
                 {
@@ -154,47 +149,31 @@ namespace LongNC.Manager
             var pos = _camera.position;
             pos.x = xLength;
 
-            _camera.DOMove(pos, 0.2f).SetEase(Ease.Linear);
-            
+            // _camera.DOMove(pos, 0.2f).SetEase(Ease.Linear);
             
             _gridClone = (CellType[, ]) grid.Clone();
-            var lengthBackground = _curLevelData.lengthBackground;
-            var startSpawn = ((lengthBackground.Item1 - grid.GetLength(0)) / 2,
-                (lengthBackground.Item2 - grid.GetLength(1)) / 2);
-            var endSpawn = (startSpawn.Item1 + grid.GetLength(0) - 1, startSpawn.Item2 + grid.GetLength(1) - 1);
 
-            for (var i = 0; i < lengthBackground.Item1; ++i)
+            for (var i = 0; i < grid.GetLength(0); ++i)
             {
-                for (var j = 0; j < lengthBackground.Item2; ++j)
+                for (var j = 0; j < grid.GetLength(1); ++j)
                 {
-                    var posCell = new Vector3(j - lengthBackground.Item2 / 2f, lengthBackground.Item1 / 2f - i);
-                    if (startSpawn.Item1 <= i && i <= endSpawn.Item1 &&
-                        startSpawn.Item2 <= j && j <= endSpawn.Item2)
+                    var posCell = new Vector3(j - grid.GetLength(1) / 2f, grid.GetLength(0) / 2f - i);
+                    switch (grid[i, j])
                     {
-                        var iIndex = i - startSpawn.Item1;
-                        var jIndex = j - startSpawn.Item2;
-                        switch (grid[iIndex, jIndex])
-                        {
-                            case CellType.Ban:
-                                PoolingManager.Spawn(_backgroundPrefab, posCell, Quaternion.Euler(-90f, 0f, 0f), backgroundObj.transform);
-                                break;
-                            case CellType.Active:
-                                break;
-                            case CellType.Inactive:
-                                posCell.z = 0.1f;
-                                PoolingManager.Spawn(_wallPrefab, posCell, Quaternion.Euler(-90f, 0f, 0f),
-                                    wallObj.transform);
-                                break;
-                            case CellType.Cube:
-                                posCell.z = -0.5f;
-                                var trans = PoolingManager.Spawn(_cubePrefab, posCell, Quaternion.identity, cubeObj.transform);
-                                _dictIndexCube[trans.transform] = (iIndex, jIndex);
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        PoolingManager.Spawn(_backgroundPrefab, posCell, Quaternion.Euler(-90f, 0f, 0f), backgroundObj.transform);
+                        case CellType.Ban:
+                            break;
+                        case CellType.Active:
+                            break;
+                        case CellType.Inactive:
+                            posCell.z = -0.25f;
+                            PoolingManager.Spawn(_wallPrefab, posCell, Quaternion.Euler(-90f, 0f, 0f),
+                                wallObj.transform);
+                            break;
+                        case CellType.Cube:
+                            posCell.z = -0.75f;
+                            var trans = PoolingManager.Spawn(_cubePrefab, posCell, Quaternion.identity, cubeObj.transform);
+                            _dictIndexCube[trans.transform] = (i, j);
+                            break;
                     }
                 }
             }

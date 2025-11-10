@@ -13,13 +13,25 @@
         
         // Gameplay Events
         OnTimeChanged,
+        OnSoundChanged,
+        
+        OnRestartClicked,
+        OnCloseRestartClicked,
+        OnRestartButtonClicked,
+        
+        OnHelpClicked,
+        OnCloseHelpClicked,
+        
+        OnSettingClicked,
+        OnCloseSettingClicked,
         
         // Button Events
         OnPlayButtonClicked,
         OnPauseButtonClicked,
         OnResumeButtonClicked,
-        OnRestartButtonClicked,
         OnNextLevelButtonClicked,
         OnCloseButtonClicked,
+        
+        
     }
 }
