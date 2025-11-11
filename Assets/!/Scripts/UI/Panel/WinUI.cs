@@ -21,8 +21,6 @@ namespace LongNC.UI.Panel
         [Title("Buttons")]
         [OdinSerialize] 
         private Button _nextLevelButton;
-        [OdinSerialize] 
-        private Button _restartButton;
         
         
         private void Awake()
@@ -35,30 +33,13 @@ namespace LongNC.UI.Panel
         private void SetupButtons()
         {
             _nextLevelButton?.onClick.AddListener(OnNextLevelClicked);
-            _restartButton?.onClick.AddListener(OnRestartClicked);
         }
         
         private void OnNextLevelClicked()
         {
-            Observer.PostEvent(UIEventID.OnNextLevelButtonClicked);
-        }
-        
-        private void OnRestartClicked()
-        {
-            Observer.PostEvent(UIEventID.OnRestartButtonClicked);
+            Observer.PostEvent(UIEventID.OnNextLevelButtonClicked, _nextLevelButton.transform);
         }
         
         #endregion
-        
-        protected override void OnShow()
-        {
-            transform.localScale = Vector3.zero;
-            transform.DOScale(Vector3.one, fadeTime).SetEase(Ease.OutBack);
-            
-            _titleText.transform.localScale = Vector3.zero;
-            _titleText.transform.DOScale(Vector3.one, 0.5f)
-                .SetEase(Ease.OutElastic)
-                .SetDelay(0.2f);
-        }
     }
 }

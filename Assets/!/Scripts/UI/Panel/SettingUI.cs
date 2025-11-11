@@ -50,7 +50,7 @@ namespace LongNC.UI.Panel
 
         private void OnCloseButtonClicked()
         {
-            Observer.PostEvent(UIEventID.OnCloseSettingClicked);
+            Observer.PostEvent(UIEventID.OnCloseSettingClicked, _closeButton.transform);
         }
 
         private void OnSliderValueChanged(float value)

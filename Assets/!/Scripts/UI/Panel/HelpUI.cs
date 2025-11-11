@@ -25,7 +25,7 @@ namespace LongNC.UI.Panel
 
         private void OnCloseButtonClicked()
         {
-            Observer.PostEvent(UIEventID.OnCloseHelpClicked);
+            Observer.PostEvent(UIEventID.OnCloseHelpClicked, _closeButton);
         }
     }
 }

@@ -6,6 +6,7 @@ using DG.Tweening;
 using LongNC.Cube;
 using LongNC.UI;
 using LongNC.UI.Data;
+using LongNC.UI.Manager;
 using UnityEngine;
 
 namespace LongNC.Manager
@@ -23,6 +24,15 @@ namespace LongNC.Manager
         {
             UnregisterObserver();
         }
+        
+        private void Start()
+        {
+            Application.targetFrameRate = 60;
+            var curLevel = PlayerPrefs.GetInt("CurrentLevel");
+            if (curLevel < 1) curLevel = 1;
+            LevelManager.Instance.LoadLevel(curLevel);
+            LevelManager.Instance.LoadAllObjInLevel();
+        }
 
         #region Observers
 
@@ -30,12 +40,14 @@ namespace LongNC.Manager
         {
             Observer.RegisterEvent(UIEventID.OnNextLevelButtonClicked, OnNextLevelButtonClicked);
             Observer.RegisterEvent(UIEventID.OnRestartButtonClicked, OnRestartButtonClicked);
+            Observer.RegisterEvent(UIEventID.OnTryAgainButtonClicked, OnTryAgainButtonClicked);
         }
 
         private void UnregisterObserver()
         {
             Observer.RemoveEvent(UIEventID.OnNextLevelButtonClicked, OnNextLevelButtonClicked);
             Observer.RemoveEvent(UIEventID.OnRestartButtonClicked, OnRestartButtonClicked);
+            Observer.RemoveEvent(UIEventID.OnTryAgainButtonClicked, OnTryAgainButtonClicked);
         }
 
         #endregion
@@ -55,95 +67,13 @@ namespace LongNC.Manager
             LevelManager.Instance.LoadAllObjInLevel();
         }
 
-
-        private Coroutine _coroutine0, _coroutine1;
-        public void OnNextLevelButtonClicked()
+        private void OnTryAgainButtonClicked(object param)
         {
-            if (_coroutine0 == null)
-            {
-                LevelManager.Instance.LoadNextLevel();
-                LevelManager.Instance.ClearCurrentLevel();
-                DOVirtual.DelayedCall(.1f, () =>
-                {
-
-                    LevelManager.Instance.LoadAllObjInLevel();
-                });
-                _coroutine0 = StartCoroutine(IEDelay(0.7f, () =>
-                {
-                    _coroutine0 = null;
-                }));
-            }
-        }
-        
-        public void OnRestartButtonClicked()
-        {
-            if (_coroutine1 == null)
-            {
-                LevelManager.Instance.ClearCurrentLevel();
-                DOVirtual.DelayedCall(.1f, () =>
-                {
-
-                    LevelManager.Instance.LoadAllObjInLevel();
-                });
-                _coroutine1 = StartCoroutine(IEDelay(0.7f, () =>
-                {
-                    _coroutine1 = null;
-                }));
-            }
-        }
-
-
-        #endregion
-
-        private void Start()
-        {
-            Application.targetFrameRate = 60;
-            var curLevel = PlayerPrefs.GetInt("CurrentLevel");
-            if (curLevel < 1) curLevel = 1;
-            LevelManager.Instance.LoadLevel(curLevel);
+            LevelManager.Instance.ClearCurrentLevel();
             LevelManager.Instance.LoadAllObjInLevel();
         }
         
-        public void WinGame(float timeDelay = 0f)
-        {
-            InputManager.Instance.SetIsCanControl(false);
-            if (timeDelay == 0f)
-            {
-                // UIManager.Instance.PanelWin();
-            }
-            else
-            {
-                StartCoroutine(IEDelay(timeDelay, () =>
-                {
-                    Debug.LogWarning("Win level!");
-                    // UIManager.Instance.PanelWin();
-                }));
-            }
-        }
-
-        public void LoseGame(float timeDelay = 0f)
-        {
-            InputManager.Instance.SetIsCanControl(false);
-            if (timeDelay == 0f)
-            {
-                // UIManager.Instance.PanelLose();
-            }
-            else
-            {
-                StartCoroutine(IEDelay(timeDelay, () =>
-                {
-                    Debug.LogWarning("Lose level!");
-                    // UIManager.Instance.PanelLose();
-                }));
-            }
-        }
-
-        private IEnumerator IEDelay(float timeDelay, Action action)
-        {
-            yield return WaitForSecondCache.Get(timeDelay);
-
-            action?.Invoke();
-        }
+        #endregion
 
         public void TestClick()
         {

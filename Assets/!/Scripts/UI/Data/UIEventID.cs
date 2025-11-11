@@ -4,15 +4,13 @@
     {
         // Game State Events
         OnStartGame,
-        OnPauseGame,
-        OnResumeGame,
         OnWinGame,
         OnLoseGame,
-        OnLevelUp,
         OnQuitGame,
         
         // Gameplay Events
-        OnTimeChanged,
+        OnPlayButtonClicked,
+        
         OnSoundChanged,
         
         OnRestartClicked,
@@ -25,13 +23,9 @@
         OnSettingClicked,
         OnCloseSettingClicked,
         
-        // Button Events
-        OnPlayButtonClicked,
-        OnPauseButtonClicked,
-        OnResumeButtonClicked,
         OnNextLevelButtonClicked,
         OnCloseButtonClicked,
         
-        
+        OnTryAgainButtonClicked,
     }
 }

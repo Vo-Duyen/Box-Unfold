@@ -2,9 +2,12 @@
 using System.Net.NetworkInformation;
 using DesignPattern;
 using DesignPattern.ObjectPool;
+using DesignPattern.Observer;
 using DG.Tweening;
 using LongNC.Cube;
 using LongNC.Data;
+using LongNC.UI.Data;
+using LongNC.UI.Manager;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -27,9 +30,7 @@ namespace LongNC.Manager
     public class LevelManager : Singleton<LevelManager>
     {
         private const string CurLevelString = "Current Level";
-
-        [SerializeField] private Transform _camera;
-
+        
         private Transform TF => transform;
         
         [FoldoutGroup(CurLevelString)]
@@ -112,7 +113,7 @@ namespace LongNC.Manager
             };
 
             // Spawn background
-            PoolingManager.Spawn(_backgroundPrefab, Vector3.back * 0.2f, Quaternion.identity, curLevelObj.transform);
+            PoolingManager.Spawn(_backgroundPrefab, Vector3.back * 0.2f, Quaternion.Euler(Vector3.left * 90f), curLevelObj.transform);
             
             var cubeObj = new GameObject(name: "Cubes")
             {
@@ -134,22 +135,11 @@ namespace LongNC.Manager
             
             var grid = _curLevelData.gridCells;
 
-            var xLength = -1f;
-            
-            // TODO: Camera
+            var pivot = Vector3.zero;
             if (grid.GetLength(1) % 2 == 0)
             {
-                xLength = -0.5f;
+                pivot.x += 0.5f;
             }
-            else
-            {
-                xLength = -1;
-            }
-
-            var pos = _camera.position;
-            pos.x = xLength;
-
-            // _camera.DOMove(pos, 0.2f).SetEase(Ease.Linear);
             
             _gridClone = (CellType[, ]) grid.Clone();
 
@@ -158,6 +148,7 @@ namespace LongNC.Manager
                 for (var j = 0; j < grid.GetLength(1); ++j)
                 {
                     var posCell = new Vector3(j - grid.GetLength(1) / 2f, grid.GetLength(0) / 2f - i);
+                    posCell += pivot;
                     switch (grid[i, j])
                     {
                         case CellType.Ban:
@@ -177,6 +168,9 @@ namespace LongNC.Manager
                     }
                 }
             }
+            
+            // UI
+            UIManager.Instance.UpdateLevel(_currentLevel);
         }
 
         public bool CheckMove(Transform trans, Direction direction)
@@ -255,7 +249,7 @@ namespace LongNC.Manager
             _cntCheckWinLevel -= amount;
             if (_cntCheckWinLevel == 0)
             {
-                GameManager.Instance.WinGame(0.5f);
+                ObserverManager<UIEventID>.Instance.PostEvent(UIEventID.OnWinGame, 0.5f);
             }
             else if (_cntCheckWinLevel < 0)
             {

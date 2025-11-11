@@ -152,7 +152,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 354599924}
-  - {fileID: 1076259663}
   - {fileID: 1884092897}
   m_Father: {fileID: 466839175}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -178,6 +177,8 @@ MonoBehaviour:
     SerializedBytes: 
     ReferencedUnityObjects:
     - {fileID: 37141329}
+    - {fileID: 1884092897}
+    - {fileID: 1076259664}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -190,7 +191,48 @@ MonoBehaviour:
       Entry: 4
       Data: 0.3
     - Name: _arrScale
-      Entry: 6
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[UnityEngine.Transform, UnityEngine.CoreModule],[UnityEngine.Vector3,
+        UnityEngine.CoreModule]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.ObjectEqualityComparer`1[[UnityEngine.Transform,
+        UnityEngine.CoreModule]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 1
+    - Name: $v
+      Entry: 7
+      Data: UnityEngine.Vector3, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.7
+    - Name: 
+      Entry: 4
+      Data: 0.7
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
       Data: 
     - Name: _titleText
       Entry: 6
@@ -199,11 +241,8 @@ MonoBehaviour:
       Entry: 6
       Data: 
     - Name: _nextLevelButton
-      Entry: 6
-      Data: 
-    - Name: _restartButton
-      Entry: 6
-      Data: 
+      Entry: 10
+      Data: 2
 --- !u!225 &37141329
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -288,7 +327,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.9347992, y: 5.1412964}
+  m_AnchoredPosition: {x: -0.9347992, y: 15}
   m_SizeDelta: {x: -69.1738, y: -83.1956}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &69180935
@@ -313,8 +352,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Try Again
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1db166619d5ba4bb2bf9a4cc03164a61, type: 2}
-  m_sharedMaterial: {fileID: 8418395759820322320, guid: 1db166619d5ba4bb2bf9a4cc03164a61, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b2d1c6e82c416664dbe8838bb86769db, type: 2}
+  m_sharedMaterial: {fileID: 1111794722264614942, guid: b2d1c6e82c416664dbe8838bb86769db, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -338,7 +377,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 74.1
+  m_fontSize: 96
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -498,7 +537,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1191164384}
-  - {fileID: 1109997637}
   - {fileID: 289139251}
   m_Father: {fileID: 466839175}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -574,6 +612,8 @@ MonoBehaviour:
     SerializedBytes: 
     ReferencedUnityObjects:
     - {fileID: 148615499}
+    - {fileID: 289139251}
+    - {fileID: 1109997638}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -586,13 +626,52 @@ MonoBehaviour:
       Entry: 4
       Data: 0.3
     - Name: _arrScale
-      Entry: 6
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[UnityEngine.Transform, UnityEngine.CoreModule],[UnityEngine.Vector3,
+        UnityEngine.CoreModule]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.ObjectEqualityComparer`1[[UnityEngine.Transform,
+        UnityEngine.CoreModule]], mscorlib
+    - Name: 
+      Entry: 8
       Data: 
-  titleText: {fileID: 0}
-  scoreText: {fileID: 0}
-  messageText: {fileID: 0}
-  retryButton: {fileID: 0}
-  homeButton: {fileID: 0}
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 1
+    - Name: $v
+      Entry: 7
+      Data: UnityEngine.Vector3, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.7
+    - Name: 
+      Entry: 4
+      Data: 0.7
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: _tryAgainButton
+      Entry: 10
+      Data: 2
 --- !u!1 &230786931
 GameObject:
   m_ObjectHideFlags: 0
@@ -982,7 +1061,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1109997637}
   m_Father: {fileID: 148615497}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1331,13 +1411,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.030117227, y: -0.28387526, z: 0.008921131, w: 0.9583466}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalRotation: {x: 0, y: -0.258819, z: 0, w: 0.9659259}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 3.6, y: -33, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -30, z: 0}
 --- !u!114 &410087042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1632,12 +1712,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80f92e1e823c4b9e8d02bb634478c67c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameplayUI: {fileID: 0}
-  restartUI: {fileID: 0}
-  _winUI: {fileID: 0}
-  _loseUI: {fileID: 0}
+  _gameplayUI: {fileID: 1363030874}
+  _restartUI: {fileID: 651275380}
   _helpUI: {fileID: 1723649368}
   _settingUI: {fileID: 272909443}
+  _winUI: {fileID: 37141328}
+  _loseUI: {fileID: 148615502}
 --- !u!1 &569419341
 GameObject:
   m_ObjectHideFlags: 0
@@ -1695,10 +1775,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Level 1
+  m_text: Level 0
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1db166619d5ba4bb2bf9a4cc03164a61, type: 2}
-  m_sharedMaterial: {fileID: 8418395759820322320, guid: 1db166619d5ba4bb2bf9a4cc03164a61, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b2d1c6e82c416664dbe8838bb86769db, type: 2}
+  m_sharedMaterial: {fileID: 1111794722264614942, guid: b2d1c6e82c416664dbe8838bb86769db, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1722,7 +1802,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28.4
+  m_fontSize: 42.8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1883,8 +1963,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -6, y: 12}
-  m_SizeDelta: {x: 195.7496, y: 138.0265}
+  m_AnchoredPosition: {x: -6.8, y: 15.9}
+  m_SizeDelta: {x: 217.1367, y: 124.8309}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &611251615
 MonoBehaviour:
@@ -1908,8 +1988,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Yes
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1db166619d5ba4bb2bf9a4cc03164a61, type: 2}
-  m_sharedMaterial: {fileID: 8418395759820322320, guid: 1db166619d5ba4bb2bf9a4cc03164a61, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b2d1c6e82c416664dbe8838bb86769db, type: 2}
+  m_sharedMaterial: {fileID: 1111794722264614942, guid: b2d1c6e82c416664dbe8838bb86769db, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1933,12 +2013,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 91.55
+  m_fontSize: 124.8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 0
-  m_fontSizeMax: 96
+  m_fontSizeMax: 196
   m_fontStyle: 16
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -2973,17 +3053,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1076259662}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2066486454}
-  m_Father: {fileID: 37141327}
+  m_Father: {fileID: 1884092897}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -280}
+  m_AnchoredPosition: {x: 0, y: -762.8572}
   m_SizeDelta: {x: 428, y: 210}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1076259664
@@ -3094,17 +3174,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1109997636}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 69180934}
-  m_Father: {fileID: 148615497}
+  m_Father: {fileID: 289139251}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -280}
+  m_AnchoredPosition: {x: 0, y: -762.8572}
   m_SizeDelta: {x: 428, y: 210}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1109997638
@@ -3592,6 +3672,7 @@ MonoBehaviour:
     SerializedBytes: 
     ReferencedUnityObjects:
     - {fileID: 1363030875}
+    - {fileID: 1957991113}
     - {fileID: 1582213933}
     - {fileID: 1789651555}
     SerializedBytesString: 
@@ -3609,30 +3690,19 @@ MonoBehaviour:
       Entry: 6
       Data: 
     - Name: _restartButton
-      Entry: 6
-      Data: 
-    - Name: _helpButton
       Entry: 10
       Data: 1
-    - Name: _settingButton
+    - Name: _helpButton
       Entry: 10
       Data: 2
-    - Name: _pauseButton
-      Entry: 6
-      Data: 
-    - Name: _homeButton
-      Entry: 6
-      Data: 
-  levelText: {fileID: 0}
+    - Name: _settingButton
+      Entry: 10
+      Data: 3
+  levelText: {fileID: 569419343}
   scoreText: {fileID: 0}
   timeText: {fileID: 0}
   moveCountText: {fileID: 0}
   timeBarFill: {fileID: 0}
-  normalTimeColor: {r: 1, g: 1, b: 1, a: 1}
-  warningTimeColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  dangerTimeColor: {r: 1, g: 0, b: 0, a: 1}
-  warningThreshold: 30
-  dangerThreshold: 10
 --- !u!225 &1363030875
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4645,8 +4715,8 @@ MonoBehaviour:
 
     to restart?'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1db166619d5ba4bb2bf9a4cc03164a61, type: 2}
-  m_sharedMaterial: {fileID: 8418395759820322320, guid: 1db166619d5ba4bb2bf9a4cc03164a61, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b2d1c6e82c416664dbe8838bb86769db, type: 2}
+  m_sharedMaterial: {fileID: 1111794722264614942, guid: b2d1c6e82c416664dbe8838bb86769db, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4670,7 +4740,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 76.4
+  m_fontSize: 96
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4751,7 +4821,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1076259663}
   m_Father: {fileID: 37141327}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -4882,8 +4953,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1957991110}
   - component: {fileID: 1957991111}
-  - component: {fileID: 1957991113}
   - component: {fileID: 1957991112}
+  - component: {fileID: 1957991113}
   m_Layer: 5
   m_Name: Restart
   m_TagString: Untagged
@@ -4992,19 +5063,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1957991111}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1011594459}
-        m_TargetAssemblyTypeName: LongNC.Manager.GameManager, Assembly-CSharp
-        m_MethodName: OnRestartButtonClicked
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &2013758069
 GameObject:
   m_ObjectHideFlags: 0
@@ -5124,7 +5183,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f23d6076536b486aaf578652b6d9ac3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 330585546}
   _currentLevel: 1
   _curLevelData: {fileID: 11400000, guid: 420f8318116c7c847b0178f055c52f83, type: 2}
   _cubePrefab: {fileID: 7254163321501012526, guid: c4ddcfc12ca19a04d9f9ec2b634ce5d4, type: 3}
@@ -5189,8 +5247,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Next Level
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1db166619d5ba4bb2bf9a4cc03164a61, type: 2}
-  m_sharedMaterial: {fileID: 8418395759820322320, guid: 1db166619d5ba4bb2bf9a4cc03164a61, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b2d1c6e82c416664dbe8838bb86769db, type: 2}
+  m_sharedMaterial: {fileID: 1111794722264614942, guid: b2d1c6e82c416664dbe8838bb86769db, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5214,7 +5272,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 67.15
+  m_fontSize: 96
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1

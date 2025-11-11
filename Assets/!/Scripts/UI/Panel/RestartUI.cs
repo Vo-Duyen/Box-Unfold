@@ -29,12 +29,12 @@ namespace LongNC.UI.Panel
 
         private void OnCloseButtonClicked()
         {
-            Observer.PostEvent(UIEventID.OnCloseHelpClicked);
+            Observer.PostEvent(UIEventID.OnCloseRestartClicked, _closeButton);
         }
 
         private void OnRestartButtonClicked()
         {
-            Observer.PostEvent(UIEventID.OnRestartButtonClicked);
+            Observer.PostEvent(UIEventID.OnRestartButtonClicked, _restartButton);
         }
     }
 }

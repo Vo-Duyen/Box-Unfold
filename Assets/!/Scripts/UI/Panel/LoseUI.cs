@@ -1,6 +1,8 @@
 ﻿using DesignPattern.Observer;
 using DG.Tweening;
 using LongNC.UI.Data;
+using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,15 +11,9 @@ namespace LongNC.UI.Panel
 {
     public class LoseUI : BaseUIPanel
     {
-        [Header("Display")]
-        [SerializeField] private TextMeshProUGUI titleText;
-        [SerializeField] private TextMeshProUGUI scoreText;
-        [SerializeField] private TextMeshProUGUI messageText;
-        
-        [Header("Buttons")]
-        [SerializeField] private Button retryButton;
-        [SerializeField] private Button homeButton;
-        
+        [Title("Button")]
+        [OdinSerialize]
+        private Button _tryAgainButton;
         
         private void Awake()
         {
@@ -26,21 +22,12 @@ namespace LongNC.UI.Panel
         
         private void SetupButtons()
         {
-            retryButton?.onClick.AddListener(OnRetryClicked);
+            _tryAgainButton?.onClick.AddListener(OnTryAgainButtonClicked);
         }
         
-        private void OnRetryClicked()
+        private void OnTryAgainButtonClicked()
         {
-            Observer.PostEvent(UIEventID.OnRestartButtonClicked);
-        }
-        
-        protected override void OnShow()
-        {
-            transform.localScale = Vector3.one;
-            transform.DOShakeScale(0.5f, 0.3f, 10, 90f);
-            
-            titleText.color = new Color(1, 1, 1, 0);
-            titleText.DOFade(1f, 0.5f).SetDelay(0.3f);
+            Observer.PostEvent(UIEventID.OnTryAgainButtonClicked, _tryAgainButton.transform);
         }
     }
 }
