@@ -258,7 +258,6 @@ GameObject:
   m_Component:
   - component: {fileID: 254795159758803464}
   - component: {fileID: 133454362999200625}
-  - component: {fileID: 1189292116891001628}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -353,18 +352,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 559}
   m_SizeDelta: {x: 440, y: 216}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1189292116891001628
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 369578387863841783}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &1579021657850211662
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1014,7 +1001,6 @@ GameObject:
   - component: {fileID: 8196936950678954979}
   - component: {fileID: 717181611477096015}
   - component: {fileID: 5464095370412863567}
-  - component: {fileID: 8012199396681331716}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1090,18 +1076,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8881438696530807987}
   m_CullTransparentMesh: 1
---- !u!114 &8012199396681331716
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6722903827089847872}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8155432471797756231
 GameObject:
   m_ObjectHideFlags: 0

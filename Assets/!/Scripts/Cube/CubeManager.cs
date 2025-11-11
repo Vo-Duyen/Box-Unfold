@@ -68,11 +68,8 @@ namespace LongNC.Cube
                         _ => Vector3.zero
                     };
                     var isCheckCubeChild = false;
-                    if (transform == null)
-                    {
-                        Debug.Log("Error");
-                        return;
-                    }
+                    var directs = new List<Vector3>();
+
                     for (var i = 0; i < transform.childCount; ++i)
                     {
                         var direct = transform.GetChild(i).position - transform.position;
@@ -86,12 +83,22 @@ namespace LongNC.Cube
                         if (direct == realDirection)
                         {
                             isCheckCubeChild = true;
-                            break;
                         }
+                        directs.Add(direct);
                     }
 
                     // if (!isCheckCubeChild) Debug.LogWarning("Check cube child failed");
                     if (!isCheckCubeChild) return;
+                    if (transform.childCount == 3)
+                    {
+                        foreach (var vector3 in directs)
+                        {
+                            if (vector3 == realDirection * -1)
+                            {
+                                return;
+                            }
+                        }
+                    }
 
                     if (!LevelManager.Instance.CheckMove(transform, direction))
                     {
@@ -108,6 +115,8 @@ namespace LongNC.Cube
                             bestSquare = trans;
                         }
                     }
+
+                    
                     bestSquare.SetParent(transform.parent);
                     
                     _coroutine = StartCoroutine(IEDelay(_timeMove, () =>

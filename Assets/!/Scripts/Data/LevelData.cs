@@ -26,23 +26,31 @@ namespace LongNC.Data
         [TableMatrix(Transpose = true)]
 #endif
         public CellType[, ] gridCells = new CellType[1, 1];
-        
+ 
+#if UNITY_EDITOR
         [BoxGroup(SetupString)]
+#endif
         public int cntCheckWinLevel;
         
 #if UNITY_EDITOR
         [FoldoutGroup(GridString)]
         [OdinSerialize]
+#endif
         private int _rows;
         
+#if UNITY_EDITOR
         [FoldoutGroup(GridString)]
         [OdinSerialize]
+#endif
         private int _columns;
         
+#if UNITY_EDITOR
         [FoldoutGroup(TimeString)]
         [OdinSerialize]
+#endif
         public float timeCounter = 90f;
         
+#if UNITY_EDITOR
         [FoldoutGroup(GridString)]
         [Button]
         private void SetupGrid()
