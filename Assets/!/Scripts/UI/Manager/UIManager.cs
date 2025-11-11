@@ -217,6 +217,7 @@ namespace LongNC.UI.Manager
             ButtonScaleAnim(param);
             SetContinueGame();
             _gameplayUI?.SetControl();
+            _loseUI?.Hide();
         }
         
         #endregion

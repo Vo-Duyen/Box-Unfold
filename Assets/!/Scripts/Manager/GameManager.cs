@@ -75,9 +75,9 @@ namespace LongNC.Manager
         
         #endregion
 
-        public void TestClick()
+        public void TestNextLevel()
         {
-            Debug.Log("Test click");
+            OnNextLevelButtonClicked(null);
         }
     }
 }

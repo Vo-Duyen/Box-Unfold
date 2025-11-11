@@ -53,6 +53,10 @@ namespace LongNC.Manager
         [SerializeField]
         private GameObject _backgroundPrefab;
         
+        [FoldoutGroup(CurLevelString)]
+        [SerializeField]
+        private GameObject _maskBackgroundPrefab;
+        
         private readonly ILevelLoader _levelLoader = new LevelLoader();
         private CellType[,] _gridClone;
         private Vector3[] _arrCheckDirection =
@@ -131,15 +135,28 @@ namespace LongNC.Manager
                 }
             };
 
+            var maskBgObj = new GameObject(name: "MaskBg")
+            {
+                transform =
+                {
+                    parent = curLevelObj.transform,
+                }
+            };
+
             _cntCheckWinLevel = _curLevelData.cntCheckWinLevel;
             
             var grid = _curLevelData.gridCells;
 
             var pivot = Vector3.zero;
-            if (grid.GetLength(1) % 2 == 0)
-            {
+            // if (grid.GetLength(1) % 2 == 0)
+            // {
                 pivot.x += 0.5f;
-            }
+            // }
+            // else
+            // {
+            //     pivot.x += 1f;
+            // }
+            Debug.Log($"RePosition: {grid.GetLength(1)}");
             
             _gridClone = (CellType[, ]) grid.Clone();
 
@@ -156,12 +173,24 @@ namespace LongNC.Manager
                         case CellType.Active:
                             break;
                         case CellType.Inactive:
-                            posCell.z = -0.25f;
+                            posCell.z = -0.165f;
                             PoolingManager.Spawn(_wallPrefab, posCell, Quaternion.Euler(-90f, 0f, 0f),
                                 wallObj.transform);
+
+                            posCell.z = 0.29f;
+                            PoolingManager.Spawn(_maskBackgroundPrefab, posCell, Quaternion.identity,
+                                maskBgObj.transform);
                             break;
                         case CellType.Cube:
-                            posCell.z = -0.75f;
+                            posCell.z = -0.165f;
+                            PoolingManager.Spawn(_wallPrefab, posCell, Quaternion.Euler(-90f, 0f, 0f),
+                                wallObj.transform);
+
+                            posCell.z = 0.29f;
+                            PoolingManager.Spawn(_maskBackgroundPrefab, posCell, Quaternion.identity,
+                                maskBgObj.transform);
+                            
+                            posCell.z = -0.7f;
                             var trans = PoolingManager.Spawn(_cubePrefab, posCell, Quaternion.identity, cubeObj.transform);
                             _dictIndexCube[trans.transform] = (i, j);
                             break;
