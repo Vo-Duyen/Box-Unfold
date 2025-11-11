@@ -15,6 +15,8 @@ namespace LongNC.Manager
     {
         private ObserverManager<UIEventID> Observer => ObserverManager<UIEventID>.Instance;
 
+        private int _curLevel;
+
         private void OnEnable()
         {
             RegisterObserver();
@@ -28,11 +30,16 @@ namespace LongNC.Manager
         private void Start()
         {
             Application.targetFrameRate = 60;
-            var curLevel = PlayerPrefs.GetInt("CurrentLevel");
-            if (curLevel < 1) curLevel = 1;
-            LevelManager.Instance.LoadLevel(curLevel);
+            _curLevel = PlayerPrefs.GetInt("CurrentLevel");
+            if (_curLevel < 1) _curLevel = 1;
+            LevelManager.Instance.LoadLevel(_curLevel);
             LevelManager.Instance.LoadAllObjInLevel();
             InputManager.Instance.SetIsCanControl();
+
+            if (SoundManager.Instance.IsPlaying(SoundId.Background) == false)
+            {
+                SoundManager.Instance.PlayFX(SoundId.Background, true);
+            }
         }
 
         #region Observers
@@ -60,6 +67,8 @@ namespace LongNC.Manager
             LevelManager.Instance.LoadNextLevel();
             LevelManager.Instance.ClearCurrentLevel();
             LevelManager.Instance.LoadAllObjInLevel();
+            ++_curLevel;
+            PlayerPrefs.SetInt("CurrentLevel", _curLevel);
         }
         
         private void OnRestartButtonClicked(object param)

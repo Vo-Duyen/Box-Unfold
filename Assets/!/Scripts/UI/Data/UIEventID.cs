@@ -9,8 +9,6 @@
         OnQuitGame,
         
         // Gameplay Events
-        OnPlayButtonClicked,
-        
         OnSoundChanged,
         
         OnRestartClicked,
@@ -24,7 +22,6 @@
         OnCloseSettingClicked,
         
         OnNextLevelButtonClicked,
-        OnCloseButtonClicked,
         
         OnTryAgainButtonClicked,
     }

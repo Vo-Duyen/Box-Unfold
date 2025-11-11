@@ -19,6 +19,7 @@ namespace LongNC.Data
     {
         private const string SetupString = "Setup";
         private const string GridString = SetupString + "/Grid Setup";
+        private const string TimeString = SetupString + "/Time";
         
 #if UNITY_EDITOR
         [BoxGroup(SetupString)]
@@ -37,6 +38,10 @@ namespace LongNC.Data
         [FoldoutGroup(GridString)]
         [OdinSerialize]
         private int _columns;
+        
+        [FoldoutGroup(TimeString)]
+        [OdinSerialize]
+        public float timeCounter = 90f;
         
         [FoldoutGroup(GridString)]
         [Button]

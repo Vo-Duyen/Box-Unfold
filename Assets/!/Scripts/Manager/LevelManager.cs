@@ -100,6 +100,7 @@ namespace LongNC.Manager
                     queue.Enqueue(target.GetChild(0));
                 }
                 
+                DOTween.Kill(target);
                 PoolingManager.Despawn(target.gameObject);
             }
         }
@@ -148,15 +149,7 @@ namespace LongNC.Manager
             var grid = _curLevelData.gridCells;
 
             var pivot = Vector3.zero;
-            // if (grid.GetLength(1) % 2 == 0)
-            // {
-                pivot.x += 0.5f;
-            // }
-            // else
-            // {
-            //     pivot.x += 1f;
-            // }
-            Debug.Log($"RePosition: {grid.GetLength(1)}");
+            pivot.x += 0.5f;
             
             _gridClone = (CellType[, ]) grid.Clone();
 
@@ -200,6 +193,7 @@ namespace LongNC.Manager
             
             // UI
             UIManager.Instance.UpdateLevel(_currentLevel);
+            UIManager.Instance.OnRestartTimer(_curLevelData.timeCounter);
         }
 
         public bool CheckMove(Transform trans, Direction direction)
@@ -212,7 +206,11 @@ namespace LongNC.Manager
                 Direction.Down => 3,
                 _ => -1
             };
-            
+
+            if (_dictIndexCube.ContainsKey(trans) == false)
+            {
+                return false;
+            }
             var newIndex = (_dictIndexCube[trans].x + (int) _arrCheckDirection[id].x, _dictIndexCube[trans].y + (int) _arrCheckDirection[id].y);
 
             if (_gridClone[newIndex.Item1, newIndex.Item2] == CellType.Inactive)
@@ -279,6 +277,7 @@ namespace LongNC.Manager
             if (_cntCheckWinLevel == 0)
             {
                 ObserverManager<UIEventID>.Instance.PostEvent(UIEventID.OnWinGame, 0.5f);
+                SoundManager.Instance.PlayFX(SoundId.Win);
             }
             else if (_cntCheckWinLevel < 0)
             {

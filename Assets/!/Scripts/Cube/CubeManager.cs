@@ -19,6 +19,8 @@ namespace LongNC.Cube
         private IMovement _movement = new Movement();
         private Vector3 _posMouseDown;
         private Vector3 _posMouseUp;
+        private float _timeMouseDown;
+        private float _timeMouseUp;
         private Coroutine _coroutine;
         private Dictionary<Transform, bool> _dictionary = new Dictionary<Transform, bool>();
         
@@ -38,17 +40,21 @@ namespace LongNC.Cube
         public void OnClickDown()
         {
             _posMouseDown = Input.mousePosition;
+            _timeMouseDown = Time.time;
         }
 
         public void OnClickUp()
         {
             _posMouseUp = Input.mousePosition;
+            _timeMouseUp = Time.time;
         }
         
-        public void CheckMove(bool isDrag = true)
+        public void CheckMove()
         {
             if (_coroutine == null)
             {
+                var isDrag = _timeMouseUp - _timeMouseDown > 0.08f;
+                
                 if (isDrag)
                 {
                     var direction = _movement.GetDirection(_posMouseDown, _posMouseUp);
@@ -62,6 +68,11 @@ namespace LongNC.Cube
                         _ => Vector3.zero
                     };
                     var isCheckCubeChild = false;
+                    if (transform == null)
+                    {
+                        Debug.Log("Error");
+                        return;
+                    }
                     for (var i = 0; i < transform.childCount; ++i)
                     {
                         var direct = transform.GetChild(i).position - transform.position;
@@ -189,7 +200,7 @@ namespace LongNC.Cube
                 }
             }
         }
-
+        
         private IEnumerator IEDelay(float time, Action action)
         {
             action?.Invoke();

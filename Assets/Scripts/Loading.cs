@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using LongNC.Manager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -14,6 +15,8 @@ public class Loading : MonoBehaviour
 
     private void Start()
     {
+        SoundManager.Instance.PlayFX(SoundId.Background, true);
+        
         _slider.gameObject.SetActive(false);
         _play.gameObject.SetActive(true);
         _play.onClick.AddListener(() =>

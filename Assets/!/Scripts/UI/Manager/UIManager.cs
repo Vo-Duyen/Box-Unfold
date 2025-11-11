@@ -105,6 +105,11 @@ namespace LongNC.UI.Manager
         {
             _gameplayUI?.UpdateLevel(level);
         }
+
+        public void OnRestartTimer(object param)
+        {
+            _gameplayUI.OnRestartTimeSlider(param);
+        }
         
         #region Event Handlers
 

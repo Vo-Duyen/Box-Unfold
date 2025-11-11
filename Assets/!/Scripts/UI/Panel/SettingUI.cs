@@ -41,6 +41,12 @@ namespace LongNC.UI.Panel
 
         private void SetupSlider()
         {
+            var volumeAll = PlayerPrefs.GetFloat("VolumeAll");
+            if (volumeAll < 0 || volumeAll > 1)
+            {
+                volumeAll = 1;
+            }
+            _sliderSound.value = volumeAll;
             _sliderSound?.onValueChanged.AddListener(OnSliderValueChanged);
         }
 
@@ -55,7 +61,7 @@ namespace LongNC.UI.Panel
 
         private void OnSliderValueChanged(float value)
         {
-            Observer.PostEvent(UIEventID.OnSoundChanged, (value, _sliderSound.maxValue));
+            Observer.PostEvent(UIEventID.OnSoundChanged, value);
         }
 
         #endregion

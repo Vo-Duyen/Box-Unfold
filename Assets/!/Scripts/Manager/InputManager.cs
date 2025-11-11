@@ -16,7 +16,6 @@ namespace LongNC.Cube
         [ReadOnly]
         private bool _isCanControl;
         
-        private bool _isDragging;
         private CubeManager _cubeManager; 
         private RaycastHit[] _hits = new RaycastHit[10];
         
@@ -57,26 +56,23 @@ namespace LongNC.Cube
         {
             if (_isCanControl)
             {
-                if (Input.GetMouseButtonDown(0) && !_isDragging)
+                if (Input.GetMouseButtonDown(0))
                 {
                     var cube = GetCube();
-                    // Debug.Log(cube.name);
                     if (cube == null)
                     {
                         return;
                     }
-
-                    _isDragging = true;
-                    
                     _cubeManager = cube.GetComponent<CubeManager>();
                     _cubeManager.OnClickDown();
-                    _cubeManager.CheckMove(false);
                 }
-                else if (Input.GetMouseButtonUp(0) && _isDragging)
+                else if (Input.GetMouseButtonUp(0))
                 {
-                    _isDragging = false;
-                    _cubeManager.OnClickUp();
-                    _cubeManager.CheckMove();
+                    if (_cubeManager != null)
+                    {
+                        _cubeManager.OnClickUp();
+                        _cubeManager.CheckMove();
+                    }
                 }
             }
         }

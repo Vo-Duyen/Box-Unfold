@@ -12,12 +12,11 @@ namespace LongNC.UI.Panel
 {
     public class GameplayUI : BaseUIPanel
     {
-        [Header("Info Display")]
-        [SerializeField] private TextMeshProUGUI levelText;
-        [SerializeField] private TextMeshProUGUI scoreText;
-        [SerializeField] private TextMeshProUGUI timeText;
-        [SerializeField] private TextMeshProUGUI moveCountText;
-        [SerializeField] private Image timeBarFill;
+        [Title("Info Display")]
+        [OdinSerialize]
+        private TextMeshProUGUI _levelText;
+        [OdinSerialize]
+        private Slider _timeSlider;
         
         [Title("Buttons")]
         [OdinSerialize]
@@ -31,7 +30,22 @@ namespace LongNC.UI.Panel
         {
             SetupButtons();
         }
-        
+        public void OnRestartTimeSlider(object param)
+        {
+            if (param is float time)
+            {
+                _timeSlider.value = _timeSlider.maxValue;
+                DOVirtual.Float(0, time, time, t =>
+                {
+                    _timeSlider.value = (time - t) / time;
+                    if (Mathf.Approximately(_timeSlider.value, 0))
+                    {
+                        Observer.PostEvent(UIEventID.OnLoseGame);
+                    }
+                }).SetEase(Ease.Linear);
+            }
+        }
+
         private void SetupButtons()
         {
             _restartButton?.onClick.AddListener(OnRestartClicked);
@@ -60,8 +74,8 @@ namespace LongNC.UI.Panel
         
         public void UpdateLevel(int level)
         {
-            levelText.text = $"Level {level}";
-            levelText.transform.DOPunchScale(Vector3.one * 0.5f, 0.5f);
+            _levelText.text = $"Level {level}";
+            _levelText.transform.DOPunchScale(Vector3.one * 0.5f, 0.5f);
         }
     }
 }

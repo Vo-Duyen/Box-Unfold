@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DG.Tweening;
+using LongNC.Manager;
 using UnityEngine;
 
 namespace LongNC.Cube
@@ -74,6 +75,9 @@ namespace LongNC.Cube
 
         public void Move(Transform target, Direction direction, float distance, float timeMove)
         {
+            // Sound
+            SoundManager.Instance.PlayFX(SoundId.Move);
+            
             var curPosition = target.transform.localPosition;
             var direct = Vector3.zero;
             var rotateAxis = Vector3.zero;
@@ -105,14 +109,11 @@ namespace LongNC.Cube
             var rotateCenter = target.position + direct / 2 + Vector3.down / 2;
             rotateAxis = Vector3.Cross(rotateAxis, direct);
 
-            var initialRotation = target.rotation;
-            var initialPosition = target.position;
-
-            float previousAngle = 0f;
+            var previousAngle = 0f;
             
             DOVirtual.Float(0, 90f, timeMove, currentAngle =>
             {
-                float deltaAngle = currentAngle - previousAngle;
+                var deltaAngle = currentAngle - previousAngle;
                 
                 target.RotateAround(rotateCenter, rotateAxis, deltaAngle);
                 
