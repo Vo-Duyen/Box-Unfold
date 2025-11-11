@@ -32,6 +32,7 @@ namespace LongNC.Manager
             if (curLevel < 1) curLevel = 1;
             LevelManager.Instance.LoadLevel(curLevel);
             LevelManager.Instance.LoadAllObjInLevel();
+            InputManager.Instance.SetIsCanControl();
         }
 
         #region Observers

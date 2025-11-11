@@ -2,6 +2,7 @@
 using DesignPattern;
 using DesignPattern.Observer;
 using DG.Tweening;
+using LongNC.Cube;
 using LongNC.UI.Data;
 using LongNC.UI.Panel;
 using Sirenix.OdinInspector;
@@ -235,10 +236,12 @@ namespace LongNC.UI.Manager
         {
             if (value)
             {
+                InputManager.Instance.SetIsCanControl();
                 Time.timeScale = _currentTimeScale;
             }
             else
             {
+                InputManager.Instance.SetIsCanControl(false);
                 _currentTimeScale = Time.timeScale;
                 Time.timeScale = 0;
             }

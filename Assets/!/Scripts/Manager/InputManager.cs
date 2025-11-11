@@ -55,8 +55,8 @@ namespace LongNC.Cube
 
         private void Update()
         {
-            // if (_isCanControl)
-            // {
+            if (_isCanControl)
+            {
                 if (Input.GetMouseButtonDown(0) && !_isDragging)
                 {
                     var cube = GetCube();
@@ -78,7 +78,7 @@ namespace LongNC.Cube
                     _cubeManager.OnClickUp();
                     _cubeManager.CheckMove();
                 }
-            // }
+            }
         }
     }
 }
