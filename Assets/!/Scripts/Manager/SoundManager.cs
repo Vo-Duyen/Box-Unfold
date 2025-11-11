@@ -58,6 +58,11 @@ namespace LongNC.Manager
                 _audioDict[soundId].clip = _soundId[(int) soundId];
             }
             var volume = PlayerPrefs.GetFloat("VolumeAll");
+            var isMute = PlayerPrefs.GetString("IsMute");
+            if (isMute is null)
+            {
+                volume = 1;
+            }
             if (volume < 0 || volume > 1)
             {
                 volume = 1;

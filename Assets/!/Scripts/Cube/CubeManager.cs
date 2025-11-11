@@ -21,8 +21,9 @@ namespace LongNC.Cube
         private Vector3 _posMouseUp;
         private float _timeMouseDown;
         private float _timeMouseUp;
-        private Coroutine _coroutine;
         private Dictionary<Transform, bool> _dictionary = new Dictionary<Transform, bool>();
+        
+        private Tween _tween;
         
         private void Awake()
         {
@@ -51,9 +52,9 @@ namespace LongNC.Cube
         
         public void CheckMove()
         {
-            if (_coroutine == null)
+            if (_tween == null)
             {
-                var isDrag = _timeMouseUp - _timeMouseDown > 0.08f;
+                var isDrag = _timeMouseUp - _timeMouseDown > 0.11f;
                 
                 if (isDrag)
                 {
@@ -119,14 +120,14 @@ namespace LongNC.Cube
                     
                     bestSquare.SetParent(transform.parent);
                     
-                    _coroutine = StartCoroutine(IEDelay(_timeMove, () =>
+                    _tween = DOVirtual.DelayedCall(_timeMove, () =>
                     {
                         _movement.Move(transform, direction, _distance, _timeMove);
                         if (transform.childCount == 1)
                         {
                             _collider.enabled = false;
                         }
-                    }));
+                    }).SetAutoKill(true).OnKill(() => _tween = null);
                 }
                 else
                 {
@@ -155,7 +156,7 @@ namespace LongNC.Cube
                     }
                     bestSquare.SetParent(transform.parent);
                     
-                    _coroutine = StartCoroutine(IEDelay(_timeMove, () =>
+                    _tween = DOVirtual.DelayedCall(_timeMove, () =>
                     {
                         _collider.enabled = false;
                         for (var i = 0; i < transform.childCount; ++i)
@@ -205,18 +206,9 @@ namespace LongNC.Cube
                             
                             _movement.Move(newObj.transform, childRes, _distance, _timeMove);
                         }
-                    }));
+                    }).SetAutoKill(true).OnKill(() => _tween = null);
                 }
             }
-        }
-        
-        private IEnumerator IEDelay(float time, Action action)
-        {
-            action?.Invoke();
-            
-            yield return WaitForSecondCache.Get(time);
-
-            _coroutine = null;
         }
         
 #if UNITY_EDITOR

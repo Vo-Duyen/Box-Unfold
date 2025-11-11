@@ -3,6 +3,7 @@ using DesignPattern;
 using DesignPattern.Observer;
 using DG.Tweening;
 using LongNC.Cube;
+using LongNC.Manager;
 using LongNC.UI.Data;
 using LongNC.UI.Panel;
 using Sirenix.OdinInspector;
@@ -201,12 +202,14 @@ namespace LongNC.UI.Manager
                 {
                     SetContinueGame(false);
                     _loseUI?.Show();
+                    SoundManager.Instance.PlayFX(SoundId.Lose);
                 }).SetUpdate(true);
             }
             else
             {
                 SetContinueGame(false);
                 _loseUI?.Show();
+                SoundManager.Instance.PlayFX(SoundId.Lose);
             }
         }
 

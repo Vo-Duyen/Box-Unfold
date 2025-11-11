@@ -74,7 +74,10 @@ namespace LongNC.Manager
         private void OnRestartButtonClicked(object param)
         {
             LevelManager.Instance.ClearCurrentLevel();
-            LevelManager.Instance.LoadAllObjInLevel();
+            DOVirtual.DelayedCall(0.05f, () =>
+            {
+                LevelManager.Instance.LoadAllObjInLevel();
+            });
         }
 
         private void OnTryAgainButtonClicked(object param)

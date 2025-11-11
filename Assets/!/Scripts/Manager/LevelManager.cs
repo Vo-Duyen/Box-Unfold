@@ -117,9 +117,6 @@ namespace LongNC.Manager
                 }
             };
 
-            // Spawn background
-            PoolingManager.Spawn(_backgroundPrefab, Vector3.back * 0.2f, Quaternion.Euler(Vector3.left * 90f), curLevelObj.transform);
-            
             var cubeObj = new GameObject(name: "Cubes")
             {
                 transform =
@@ -189,6 +186,25 @@ namespace LongNC.Manager
                             break;
                     }
                 }
+            }
+
+            var isResize = grid.GetLength(0) > 7 || grid.GetLength(1) > 7;
+
+            var bg = PoolingManager.Spawn(_backgroundPrefab, Vector3.back * 0.2f, Quaternion.Euler(Vector3.left * 90f), curLevelObj.transform);
+            var cam = Camera.main.transform;
+            
+            if (isResize)
+            {
+                bg.transform.localScale *= 1.2f;
+                var pos = cam.position;
+                pos.z = - 11.6f;
+                cam.position = pos;
+            }
+            else
+            {
+                var pos = cam.position;
+                pos.z = - 10f;
+                cam.position = pos;
             }
             
             // UI

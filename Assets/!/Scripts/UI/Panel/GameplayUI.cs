@@ -26,6 +26,8 @@ namespace LongNC.UI.Panel
         [OdinSerialize]
         private Button _settingButton;
         
+        private Tween _tween;
+        
         private void Awake()
         {
             SetupButtons();
@@ -35,14 +37,14 @@ namespace LongNC.UI.Panel
             if (param is float time)
             {
                 _timeSlider.value = _timeSlider.maxValue;
-                DOVirtual.Float(0, time, time, t =>
+                _tween?.Kill();
+                _tween = DOVirtual.Float(0, time, time, t =>
                 {
                     _timeSlider.value = (time - t) / time;
-                    if (Mathf.Approximately(_timeSlider.value, 0))
-                    {
-                        Observer.PostEvent(UIEventID.OnLoseGame);
-                    }
-                }).SetEase(Ease.Linear);
+                }).SetEase(Ease.Linear).OnComplete(() =>
+                {
+                    Observer.PostEvent(UIEventID.OnLoseGame);
+                });
             }
         }
 
