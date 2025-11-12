@@ -1,10 +1,3 @@
-//
-//  OutlineMask.shader
-//  QuickOutline
-//
-//  Created by Chris Nolet on 2/21/18.
-//  Copyright © 2018 Chris Nolet. All rights reserved.
-//
 
 Shader "Custom/Masker"
 {
@@ -23,13 +16,6 @@ Shader "Custom/Masker"
             Name "Mask"
 
             Blend Zero One
-
-            // Stencil
-            // {
-            //     Ref 1
-            //     Comp Equal
-            //     Fail Replace
-            // }
         }
     }
 }

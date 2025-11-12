@@ -36,10 +36,10 @@ namespace LongNC.Manager
             LevelManager.Instance.LoadAllObjInLevel();
             InputManager.Instance.SetIsCanControl();
 
-            if (SoundManager.Instance.IsPlaying(SoundId.Background) == false)
-            {
-                SoundManager.Instance.PlayFX(SoundId.Background, true);
-            }
+            // if (SoundManager.Instance.IsPlaying(SoundId.Background) == false)
+            // {
+            //     SoundManager.Instance.PlayFX(SoundId.Background, true);
+            // }
         }
 
         #region Observers
@@ -66,9 +66,12 @@ namespace LongNC.Manager
         {
             LevelManager.Instance.LoadNextLevel();
             LevelManager.Instance.ClearCurrentLevel();
-            LevelManager.Instance.LoadAllObjInLevel();
-            ++_curLevel;
-            PlayerPrefs.SetInt("CurrentLevel", _curLevel);
+            DOVirtual.DelayedCall(0.05f, () =>
+            {
+                LevelManager.Instance.LoadAllObjInLevel();
+                ++_curLevel;
+                PlayerPrefs.SetInt("CurrentLevel", _curLevel);
+            });
         }
         
         private void OnRestartButtonClicked(object param)
@@ -91,6 +94,12 @@ namespace LongNC.Manager
         public void TestNextLevel()
         {
             OnNextLevelButtonClicked(null);
+        }
+
+        public void ResetLevel()
+        {
+            PlayerPrefs.SetInt("CurrentLevel", 0);
+            OnRestartButtonClicked(null);
         }
     }
 }

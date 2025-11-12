@@ -24,6 +24,12 @@ namespace LongNC.Manager
         
         private ObserverManager<UIEventID> Observer => ObserverManager<UIEventID>.Instance;
 
+        protected override void Awake()
+        {
+            DontDestroy = true;
+            base.Awake();
+        }
+
         private void OnEnable()
         {
             Observer.RegisterEvent(UIEventID.OnSoundChanged, OnSoundChange);
@@ -59,9 +65,10 @@ namespace LongNC.Manager
             }
             var volume = PlayerPrefs.GetFloat("VolumeAll");
             var isMute = PlayerPrefs.GetString("IsMute");
-            if (isMute is null)
+            if (isMute != "true")
             {
                 volume = 1;
+                PlayerPrefs.SetString("IsMute", "true");
             }
             if (volume < 0 || volume > 1)
             {

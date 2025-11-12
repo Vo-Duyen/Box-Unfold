@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using DesignPattern;
 using DesignPattern.ObjectPool;
@@ -75,7 +76,7 @@ namespace LongNC.Manager
         {
             _currentLevel = level;
             _curLevelData = _levelLoader.Load(_currentLevel);
-            Debug.Log($"[Complete] Loaded level: {_curLevelData.name}");
+            // Debug.Log($"[Complete] Loaded level: {_curLevelData.name}");
         }
 
         [Button]
@@ -83,7 +84,7 @@ namespace LongNC.Manager
         {
             ++_currentLevel;
             _curLevelData = _levelLoader.Load(_currentLevel);
-            Debug.Log($"[Complete] Loaded next level: {_currentLevel}");
+            // Debug.Log($"[Complete] Loaded next level: {_currentLevel}");
         }
 
         [Button]
@@ -147,6 +148,7 @@ namespace LongNC.Manager
 
             var pivot = Vector3.zero;
             pivot.x += 0.5f;
+            pivot.y -= 1f;
             
             _gridClone = (CellType[, ]) grid.Clone();
 
@@ -188,24 +190,9 @@ namespace LongNC.Manager
                 }
             }
 
-            var isResize = grid.GetLength(0) > 7 || grid.GetLength(1) > 7;
-
             var bg = PoolingManager.Spawn(_backgroundPrefab, Vector3.back * 0.2f, Quaternion.Euler(Vector3.left * 90f), curLevelObj.transform);
-            var cam = Camera.main.transform;
-            
-            if (isResize)
-            {
-                bg.transform.localScale *= 1.2f;
-                var pos = cam.position;
-                pos.z = - 11.6f;
-                cam.position = pos;
-            }
-            else
-            {
-                var pos = cam.position;
-                pos.z = - 10f;
-                cam.position = pos;
-            }
+            bg.transform.localScale *= 1.75f;
+
             
             // UI
             UIManager.Instance.UpdateLevel(_currentLevel);
@@ -214,6 +201,7 @@ namespace LongNC.Manager
 
         public bool CheckMove(Transform trans, Direction direction)
         {
+            // Debug.Log("Check move 1");
             var id = direction switch
             {
                 Direction.Left => 0,
@@ -225,10 +213,12 @@ namespace LongNC.Manager
 
             if (_dictIndexCube.ContainsKey(trans) == false)
             {
+                // Debug.LogWarning("This is null");
                 return false;
             }
             var newIndex = (_dictIndexCube[trans].x + (int) _arrCheckDirection[id].x, _dictIndexCube[trans].y + (int) _arrCheckDirection[id].y);
 
+            // Debug.LogWarning($"{newIndex} + {_gridClone[newIndex.Item1, newIndex.Item2]}");
             if (_gridClone[newIndex.Item1, newIndex.Item2] == CellType.Inactive)
             {
                 _gridClone[_dictIndexCube[trans].x, _dictIndexCube[trans].y] = CellType.Active;
@@ -245,6 +235,7 @@ namespace LongNC.Manager
 
         public bool CheckMove(Transform target, Direction[] directions)
         {
+            // Debug.Log($"Check Move 2 + {directions.Length}");
             foreach (var direction in directions)
             {
                 var id = direction switch
@@ -278,8 +269,8 @@ namespace LongNC.Manager
                 var newIndex = (_dictIndexCube[target].x + (int) _arrCheckDirection[id].x, _dictIndexCube[target].y + (int) _arrCheckDirection[id].y);
                 
                 _gridClone[_dictIndexCube[target].x, _dictIndexCube[target].y] = CellType.Active;
-                _gridClone[newIndex.Item1, newIndex.Item2] = CellType.Cube;
-                _dictIndexCube[target] = newIndex;
+                _gridClone[newIndex.Item1, newIndex.Item2] = CellType.Active;
+                // _dictIndexCube[target] = newIndex;
 
             }
             CheckLevel(directions.Length);
@@ -300,5 +291,49 @@ namespace LongNC.Manager
                 Debug.LogWarning("Error");
             }
         }
+
+        private void ResizeToScreen(Transform trans, (int height, int width) size)
+        {
+            if (size is { height: 1920, width: 1080 }) return;
+            var curScale = trans.localScale;
+            curScale.x *= size.width / 1080f;
+            trans.localScale = curScale * 1.2f;
+        }
+        
+#if UNITY_EDITOR
+        private void OnDrawGizmos()
+        {
+            if (_gridClone == null) return;
+            var pivot = Vector3.zero;
+            pivot.x += 0.5f + 10f;
+            for (var i = 0; i < _gridClone.GetLength(0); ++i)
+            {
+                for (var j = 0; j < _gridClone.GetLength(1); ++j)
+                {
+                    var posCell = new Vector3(j - _gridClone.GetLength(1) / 2f, _gridClone.GetLength(0) / 2f - i);
+                    posCell += pivot;
+                    switch (_gridClone[i, j])
+                    {
+                        case CellType.Ban:
+                            break;
+                        case CellType.Active:
+                            Gizmos.color = Color.red;
+                            Gizmos.DrawCube(posCell, Vector3.one);
+                            break;
+                        case CellType.Inactive:
+                            posCell.z = -0.165f;
+                            Gizmos.color = Color.green;
+                            Gizmos.DrawCube(posCell, Vector3.one);
+                            break;
+                        case CellType.Cube:
+                            posCell.z = -0.165f;
+                            Gizmos.color = Color.yellow;
+                            Gizmos.DrawCube(posCell, Vector3.one);
+                            break;
+                    }
+                }
+            }
+        }
+#endif
     }
 }

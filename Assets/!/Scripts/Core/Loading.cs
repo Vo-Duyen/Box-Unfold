@@ -16,7 +16,9 @@ public class Loading : MonoBehaviour
     private void Start()
     {
         SoundManager.Instance.PlayFX(SoundId.Background, true);
-        
+        var loadScreen = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+        if (loadScreen != null) loadScreen.allowSceneActivation = false;
+
         _slider.gameObject.SetActive(false);
         _play.gameObject.SetActive(true);
         _play.onClick.AddListener(() =>
@@ -26,7 +28,7 @@ public class Loading : MonoBehaviour
             _slider.DOValue(1f, _timeLoading).OnComplete(delegate
             {
                 _slider.gameObject.SetActive(false);
-                SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+                if (loadScreen != null) loadScreen.allowSceneActivation = true;
             });
         });
     }

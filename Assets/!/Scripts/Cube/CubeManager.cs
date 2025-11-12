@@ -19,11 +19,9 @@ namespace LongNC.Cube
         private IMovement _movement = new Movement();
         private Vector3 _posMouseDown;
         private Vector3 _posMouseUp;
-        private float _timeMouseDown;
-        private float _timeMouseUp;
         private Dictionary<Transform, bool> _dictionary = new Dictionary<Transform, bool>();
-        
-        private Tween _tween;
+
+        private Coroutine _coroutine;
         
         private void Awake()
         {
@@ -41,20 +39,19 @@ namespace LongNC.Cube
         public void OnClickDown()
         {
             _posMouseDown = Input.mousePosition;
-            _timeMouseDown = Time.time;
         }
 
         public void OnClickUp()
         {
             _posMouseUp = Input.mousePosition;
-            _timeMouseUp = Time.time;
         }
         
         public void CheckMove()
         {
-            if (_tween == null)
+            if (_coroutine == null)
             {
-                var isDrag = _timeMouseUp - _timeMouseDown > 0.11f;
+                var isDrag = Vector3.Distance(_posMouseDown, _posMouseUp) > 0.1f;
+            // Debug.Log($"Check Move + {isDrag} + {_timeMouseUp - _timeMouseDown}");
                 
                 if (isDrag)
                 {
@@ -96,6 +93,7 @@ namespace LongNC.Cube
                         {
                             if (vector3 == realDirection * -1)
                             {
+                                Debug.LogWarning("Don't move");
                                 return;
                             }
                         }
@@ -120,17 +118,20 @@ namespace LongNC.Cube
                     
                     bestSquare.SetParent(transform.parent);
                     
-                    _tween = DOVirtual.DelayedCall(_timeMove, () =>
+                    _coroutine = StartCoroutine(IEDelayCall(_timeMove, () =>
                     {
                         _movement.Move(transform, direction, _distance, _timeMove);
                         if (transform.childCount == 1)
                         {
                             _collider.enabled = false;
                         }
-                    }).SetAutoKill(true).OnKill(() => _tween = null);
+
+                       
+                    }));
                 }
                 else
                 {
+                    // Debug.LogWarning("is not drag");
                     var arrDirection = _movement.GetDirections(transform);
 
                     if (arrDirection == null)
@@ -156,7 +157,7 @@ namespace LongNC.Cube
                     }
                     bestSquare.SetParent(transform.parent);
                     
-                    _tween = DOVirtual.DelayedCall(_timeMove, () =>
+                    _coroutine = StartCoroutine(IEDelayCall(_timeMove, () =>
                     {
                         _collider.enabled = false;
                         for (var i = 0; i < transform.childCount; ++i)
@@ -206,9 +207,17 @@ namespace LongNC.Cube
                             
                             _movement.Move(newObj.transform, childRes, _distance, _timeMove);
                         }
-                    }).SetAutoKill(true).OnKill(() => _tween = null);
+
+                       
+                    }));
                 }
             }
+        }
+        private IEnumerator IEDelayCall(float time, Action callback)
+        {
+            callback?.Invoke();
+            yield return WaitForSecondCache.Get(time);
+            _coroutine = null;
         }
         
 #if UNITY_EDITOR

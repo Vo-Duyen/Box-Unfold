@@ -125,7 +125,7 @@ namespace LongNC.UI.Manager
         private void OnCloseRestartClicked(object param)
         {
             ButtonScaleAnim(param);
-            SetContinueGame();
+            SetContinueGame(true, 0.3f);
             _gameplayUI?.SetControl();
             _restartUI?.Hide();
         }
@@ -133,7 +133,7 @@ namespace LongNC.UI.Manager
         private void OnRestartButtonClicked(object param)
         {
             ButtonScaleAnim(param);
-            SetContinueGame();
+            SetContinueGame(true, 0.3f);
             _gameplayUI?.SetControl();
             _restartUI?.Hide();
         }
@@ -149,7 +149,7 @@ namespace LongNC.UI.Manager
         private void OnCloseHelpClicked(object param)
         {
             ButtonScaleAnim(param);
-            SetContinueGame();
+            SetContinueGame(true, 0.3f);
             _gameplayUI?.SetControl();
             _helpUI?.Hide();
         }
@@ -165,7 +165,7 @@ namespace LongNC.UI.Manager
         private void OnCloseSettingClicked(object param)
         {
             ButtonScaleAnim(param);
-            SetContinueGame();
+            SetContinueGame(true, 0.3f);
             _gameplayUI?.SetControl();
             _settingUI?.Hide();
         }
@@ -216,7 +216,7 @@ namespace LongNC.UI.Manager
         private void OnNextLevelButtonClicked(object param)
         {
             ButtonScaleAnim(param);
-            SetContinueGame();
+            SetContinueGame(true, 0.3f);
             _gameplayUI?.SetControl();
             _winUI?.Hide();
         }
@@ -224,32 +224,23 @@ namespace LongNC.UI.Manager
         private void OnTryAgainButtonClicked(object param)
         {
             ButtonScaleAnim(param);
-            SetContinueGame();
+            SetContinueGame(true, 0.3f);
             _gameplayUI?.SetControl();
             _loseUI?.Hide();
         }
         
         #endregion
 
-        #region Core Buttons
-
-        public void OnHelp()
-        {
-            
-        }
-
-        #endregion
-
-        private void SetContinueGame(bool value = true)
+        private void SetContinueGame(bool value = true, float timeDelay = 0f)
         {
             if (value)
             {
-                InputManager.Instance.SetIsCanControl();
+                InputManager.Instance.SetIsCanControl(true, timeDelay);
                 Time.timeScale = _currentTimeScale;
             }
             else
             {
-                InputManager.Instance.SetIsCanControl(false);
+                InputManager.Instance.SetIsCanControl(false, timeDelay);
                 _currentTimeScale = Time.timeScale;
                 Time.timeScale = 0;
             }

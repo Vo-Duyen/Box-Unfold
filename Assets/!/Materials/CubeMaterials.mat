@@ -118,7 +118,7 @@ Material:
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _ShadowIntensity: 0.6
+    - _ShadowIntensity: 0.845
     - _Smoothness: 0.326
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1

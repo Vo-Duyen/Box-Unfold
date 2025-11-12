@@ -27,6 +27,8 @@ namespace LongNC.UI.Panel
         private Button _settingButton;
         
         private Tween _tween;
+
+        private Tween _timerTween;
         
         private void Awake()
         {
@@ -77,7 +79,8 @@ namespace LongNC.UI.Panel
         public void UpdateLevel(int level)
         {
             _levelText.text = $"Level {level}";
-            _levelText.transform.DOPunchScale(Vector3.one * 0.5f, 0.5f);
+            _timerTween?.Kill();
+            _timerTween = _levelText.transform.DOPunchScale(Vector3.one * 0.5f, 0.5f);
         }
     }
 }

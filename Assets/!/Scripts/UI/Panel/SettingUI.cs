@@ -42,6 +42,11 @@ namespace LongNC.UI.Panel
         private void SetupSlider()
         {
             var volumeAll = PlayerPrefs.GetFloat("VolumeAll");
+            var checkVolume = PlayerPrefs.GetString("CheckVolume");
+            if (checkVolume != "true")
+            {
+                volumeAll = 1;
+            }
             if (volumeAll < 0 || volumeAll > 1)
             {
                 volumeAll = 1;
