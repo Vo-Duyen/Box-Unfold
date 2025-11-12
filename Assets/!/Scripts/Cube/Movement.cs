@@ -18,7 +18,8 @@ namespace LongNC.Cube
     {
         Direction GetDirection(Vector3 posClickDown, Vector3 posClickUp);
         Direction[] GetDirections(Transform target);
-        void Move(Transform target, Direction direction, float distance, float timeMove);
+        void Move(Transform target, int id,  Direction direction, float timeMove);
+        void Move(Transform target, Direction direction, float distance, float timeMove, Stack<List<(Transform trans, int id, Direction direct)>> historyMove);
     }
 
     public class Movement : IMovement
@@ -30,10 +31,7 @@ namespace LongNC.Cube
             {
                 return distance.x > 0 ? Direction.Right : Direction.Left;
             }
-            else
-            {
-                return distance.y > 0 ? Direction.Up : Direction.Down;
-            }
+            return distance.y > 0 ? Direction.Up : Direction.Down;
         }
 
         public Direction[] GetDirections(Transform target)
@@ -57,10 +55,10 @@ namespace LongNC.Cube
 
                 var childRes = direct switch
                 {
-                    var d when d == Vector3.left => Direction.Left,
-                    var d when d == Vector3.right => Direction.Right,
-                    var d when d == Vector3.up => Direction.Up,
-                    var d when d == Vector3.down => Direction.Down,
+                    _ when direct == Vector3.left => Direction.Left,
+                    _ when direct == Vector3.right => Direction.Right,
+                    _ when direct == Vector3.up => Direction.Up,
+                    _ when direct == Vector3.down => Direction.Down,
                     _ => Direction.None
                 };
 
@@ -73,7 +71,90 @@ namespace LongNC.Cube
             return res.ToArray();
         }
 
-        public void Move(Transform target, Direction direction, float distance, float timeMove)
+        public void Move(Transform target, int id, Direction direction, float timeMove)
+        {
+            var quaternion = target.localRotation;
+            var needRotate = Vector3.zero;
+            switch (id)
+            {
+                case 1:
+                    switch (direction)
+                    {
+                        case Direction.Down:
+                            needRotate = Vector3.left * 90f;
+                            break;
+                        case Direction.Up:
+                            needRotate = Vector3.right * 90f;
+                            break;
+                        case Direction.Left:
+                            needRotate = Vector3.up * 90f;
+                            break;
+                        case Direction.Right:
+                            needRotate = Vector3.down * 90f;
+                            break;
+                    }
+                    break;
+                case 2:
+                    switch (direction)
+                    {
+                        case Direction.Down:
+                            break;
+                        case Direction.Up:
+                            break;
+                        case Direction.Left:
+                            break;
+                        case Direction.Right:
+                            break;
+                    }
+                    break;
+                case 3:
+                    switch (direction)
+                    {
+                        case Direction.Down:
+                            break;
+                        case Direction.Up:
+                            break;
+                        case Direction.Left:
+                            break;
+                        case Direction.Right:
+                            break;
+                    }
+                    break;
+                case 4:
+                    switch (direction)
+                    {
+                        case Direction.Down:
+                            break;
+                        case Direction.Up:
+                            break;
+                        case Direction.Left:
+                            break;
+                        case Direction.Right:
+                            break;
+                    }
+                    break;
+                case 5:
+                    switch (direction)
+                    {
+                        case Direction.Down:
+                            break;
+                        case Direction.Up:
+                            break;
+                        case Direction.Left:
+                            break;
+                        case Direction.Right:
+                            break;
+                    }
+                    break;
+                case 6:
+                    break;
+            }
+
+            var needQuaternion = Quaternion.Euler(needRotate);
+            target.DOLocalRotateQuaternion(quaternion * needQuaternion, timeMove);
+        }
+        
+        public void Move(Transform target, Direction direction, float distance, float timeMove, Stack<List<(Transform trans, int id, Direction direct)>> historyMove)
         {
             // Sound
             SoundManager.Instance.PlayFX(SoundId.Move);

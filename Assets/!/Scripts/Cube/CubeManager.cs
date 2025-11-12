@@ -21,6 +21,7 @@ namespace LongNC.Cube
         private Vector3 _posMouseUp;
         private Dictionary<Transform, bool> _dictionary = new Dictionary<Transform, bool>();
 
+        private Stack<List<(Transform trans, int id, Direction direct)>> _historyMove = new Stack<List<(Transform, int, Direction)>>();
         private Coroutine _coroutine;
         
         private void Awake()
@@ -45,18 +46,37 @@ namespace LongNC.Cube
         {
             _posMouseUp = Input.mousePosition;
         }
+
+        public int GetId(Transform trans0, Transform trans1)
+        {
+            var direct = (trans1.position - trans0.position).normalized;
+            if (Mathf.Abs(direct.x) > 0.7f) direct.x = direct.x > 0 ? 1 : -1;
+            else direct.x = 0;
+            if (Mathf.Abs(direct.y) > 0.7f) direct.y = direct.y > 0 ? 1 : -1;
+            else direct.y = 0;
+            if (Mathf.Abs(direct.z) > 0.7f) direct.z = direct.z > 0 ? 1 : -1;
+            else direct.z = 0;
+
+            return direct switch
+            {
+                _ when direct == Vector3.back => 1,
+                _ when direct == Vector3.up => 2,
+                _ when direct == Vector3.left => 3,
+                _ when direct == Vector3.down => 4,
+                _ when direct == Vector3.right => 5,
+                _ when direct == Vector3.forward => 6,
+                _ => 0,
+            };
+        }
         
         public void CheckMove()
         {
             if (_coroutine == null)
             {
                 var isDrag = Vector3.Distance(_posMouseDown, _posMouseUp) > 0.1f;
-            // Debug.Log($"Check Move + {isDrag} + {_timeMouseUp - _timeMouseDown}");
-                
                 if (isDrag)
                 {
                     var direction = _movement.GetDirection(_posMouseDown, _posMouseUp);
-                    
                     var realDirection = direction switch
                     {
                         Direction.Left => Vector3.left,
@@ -67,7 +87,6 @@ namespace LongNC.Cube
                     };
                     var isCheckCubeChild = false;
                     var directs = new List<Vector3>();
-
                     for (var i = 0; i < transform.childCount; ++i)
                     {
                         var direct = transform.GetChild(i).position - transform.position;
@@ -84,8 +103,6 @@ namespace LongNC.Cube
                         }
                         directs.Add(direct);
                     }
-
-                    // if (!isCheckCubeChild) Debug.LogWarning("Check cube child failed");
                     if (!isCheckCubeChild) return;
                     if (transform.childCount == 3)
                     {
@@ -93,18 +110,14 @@ namespace LongNC.Cube
                         {
                             if (vector3 == realDirection * -1)
                             {
-                                Debug.LogWarning("Don't move");
                                 return;
                             }
                         }
                     }
-
                     if (!LevelManager.Instance.CheckMove(transform, direction))
                     {
-                        // Debug.LogWarning("Check Move failed");
                         return;
                     }
-                    
                     var bestSquare = transform.GetChild(0);
                     for (var i = 1; i < transform.childCount; ++i)
                     {
@@ -114,38 +127,28 @@ namespace LongNC.Cube
                             bestSquare = trans;
                         }
                     }
-
-                    
                     bestSquare.SetParent(transform.parent);
                     
                     _coroutine = StartCoroutine(IEDelayCall(_timeMove, () =>
                     {
-                        _movement.Move(transform, direction, _distance, _timeMove);
+                        _movement.Move(transform, direction, _distance, _timeMove, _historyMove);
                         if (transform.childCount == 1)
                         {
                             _collider.enabled = false;
                         }
-
-                       
                     }));
                 }
                 else
                 {
-                    // Debug.LogWarning("is not drag");
                     var arrDirection = _movement.GetDirections(transform);
-
                     if (arrDirection == null)
                     {
-                        // Debug.LogWarning("Get direction failed");
                         return;
                     }
-                    
                     if (!LevelManager.Instance.CheckMove(transform, arrDirection))
                     {
-                        // Debug.LogWarning("Check Move failed");
                         return;
                     }
-                   
                     var bestSquare = transform.GetChild(0);
                     for (var i = 1; i < transform.childCount; ++i)
                     {
@@ -156,7 +159,6 @@ namespace LongNC.Cube
                         }
                     }
                     bestSquare.SetParent(transform.parent);
-                    
                     _coroutine = StartCoroutine(IEDelayCall(_timeMove, () =>
                     {
                         _collider.enabled = false;
@@ -170,14 +172,11 @@ namespace LongNC.Cube
                             else direct.y = 0;
                             if (Mathf.Abs(direct.z) > 0.7f) direct.z = direct.z > 0 ? 1 : -1;
                             else direct.z = 0;
-
                             if (direct == Vector3.back)
                             {
                                 continue;
                             }
-                            
                             transform.GetChild(i).gameObject.SetActive(false);
-                            
                             var childRes = direct switch
                             {
                                 var d when d == Vector3.left => Direction.Left,
@@ -186,7 +185,6 @@ namespace LongNC.Cube
                                 var d when d == Vector3.down => Direction.Down,
                                 _ => Direction.None
                             };
-
                             var newObj = new GameObject(name: "Cube Clone")
                             {
                                 transform =
@@ -204,11 +202,8 @@ namespace LongNC.Cube
                                 child.SetActive(i == j);
                                 child.transform.localScale = Vector3.one;
                             }
-                            
-                            _movement.Move(newObj.transform, childRes, _distance, _timeMove);
+                            _movement.Move(newObj.transform, childRes, _distance, _timeMove, _historyMove);
                         }
-
-                       
                     }));
                 }
             }
