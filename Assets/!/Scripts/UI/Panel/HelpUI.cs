@@ -12,6 +12,8 @@ namespace LongNC.UI.Panel
         [Title("Close Settings")]
         [OdinSerialize]
         private Button _closeButton;
+        [OdinSerialize]
+        private Button _thankButton;
 
         private void Awake()
         {
@@ -21,6 +23,7 @@ namespace LongNC.UI.Panel
         private void SetupButtons()
         {
             _closeButton?.onClick.AddListener(OnCloseButtonClicked);
+            _thankButton?.onClick.AddListener(OnCloseButtonClicked);
         }
 
         private void OnCloseButtonClicked()
