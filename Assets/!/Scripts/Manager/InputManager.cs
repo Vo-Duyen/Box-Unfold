@@ -34,16 +34,12 @@ namespace LongNC.Cube
             for (var i = 0; i < size; ++ i)
             {
                 var hit = _hits[i];
-                if (hit.transform.TryGetComponent<CubeManager>(out var cubeManager))
+                if (hit.transform.TryGetComponent<CubeManager>(out var cubeManager) || hit.transform.TryGetComponent<CubeReverse>(out var reverse))
                 {
                     ans = hit.transform;
                     break;
                 }
             }
-
-            _hits = new RaycastHit[10];
-            
-            // if (ans != null) Debug.Log(ans.name);
             return ans;
         }
 
@@ -73,12 +69,18 @@ namespace LongNC.Cube
                     var cube = GetCube();
                     if (cube == null)
                     {
-                        
-                    // Debug.Log("Yes");
                         return;
                     }
                     _cubeManager = cube.GetComponent<CubeManager>();
-                    _cubeManager.OnClickDown();
+                    if (_cubeManager == null)
+                    {
+                        var cubeReverse = cube.GetComponent<CubeReverse>();
+                        cubeReverse.StartReverse();
+                    }
+                    else
+                    {
+                        _cubeManager.OnClickDown();
+                    }
                 }
                 else if (Input.GetMouseButtonUp(0))
                 {

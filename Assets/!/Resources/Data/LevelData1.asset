@@ -126,23 +126,22 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: lengthBackground
-      Entry: 7
-      Data: System.ValueTuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]],
-        mscorlib
-    - Name: Item1
-      Entry: 3
-      Data: 40
-    - Name: Item2
-      Entry: 3
-      Data: 20
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: _rows
       Entry: 3
       Data: 5
     - Name: _columns
       Entry: 3
       Data: 6
+    - Name: timeCounter
+      Entry: 4
+      Data: 90
+    - Name: isShowText
+      Entry: 3
+      Data: 0
+    - Name: textShow
+      Entry: 1
+      Data: Hold and Drag to Move!
   cntCheckWinLevel: 5
+  timeCounter: 90
+  isShowText: 0
+  textShow: Hold and Drag to Move!

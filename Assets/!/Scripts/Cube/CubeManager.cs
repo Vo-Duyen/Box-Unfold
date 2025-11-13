@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DesignPattern.ObjectPool;
 using DG.Tweening;
 using LongNC.Manager;
+using NUnit.Framework;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -15,13 +16,14 @@ namespace LongNC.Cube
         [SerializeField] private float _distance = 1f;
 
         [SerializeField] private Collider _collider;
+        [SerializeField] private CubeReverse _cubeReverse;
 
         private IMovement _movement = new Movement();
         private Vector3 _posMouseDown;
         private Vector3 _posMouseUp;
+        
         private Dictionary<Transform, bool> _dictionary = new Dictionary<Transform, bool>();
-
-        private Stack<List<(Transform trans, int id, Direction direct)>> _historyMove = new Stack<List<(Transform, int, Direction)>>();
+        
         private Coroutine _coroutine;
         
         private void Awake()
@@ -34,7 +36,10 @@ namespace LongNC.Cube
 
         private void Start()
         {
-            transform.DOMove(transform.position + Vector3.back * 2f, 0.5f).From().SetEase(Ease.OutBounce);
+            transform.DOMove(transform.position + Vector3.back * 2f, 0.5f).From().SetEase(Ease.OutBounce).OnComplete(() =>
+            {
+                _collider.enabled = true;
+            });
         }
 
         public void OnClickDown()
@@ -46,33 +51,12 @@ namespace LongNC.Cube
         {
             _posMouseUp = Input.mousePosition;
         }
-
-        public int GetId(Transform trans0, Transform trans1)
-        {
-            var direct = (trans1.position - trans0.position).normalized;
-            if (Mathf.Abs(direct.x) > 0.7f) direct.x = direct.x > 0 ? 1 : -1;
-            else direct.x = 0;
-            if (Mathf.Abs(direct.y) > 0.7f) direct.y = direct.y > 0 ? 1 : -1;
-            else direct.y = 0;
-            if (Mathf.Abs(direct.z) > 0.7f) direct.z = direct.z > 0 ? 1 : -1;
-            else direct.z = 0;
-
-            return direct switch
-            {
-                _ when direct == Vector3.back => 1,
-                _ when direct == Vector3.up => 2,
-                _ when direct == Vector3.left => 3,
-                _ when direct == Vector3.down => 4,
-                _ when direct == Vector3.right => 5,
-                _ when direct == Vector3.forward => 6,
-                _ => 0,
-            };
-        }
         
         public void CheckMove()
         {
             if (_coroutine == null)
             {
+                _cubeReverse?.ReadyReverse(_timeMove);
                 var isDrag = Vector3.Distance(_posMouseDown, _posMouseUp) > 0.1f;
                 if (isDrag)
                 {
@@ -131,8 +115,8 @@ namespace LongNC.Cube
                     
                     _coroutine = StartCoroutine(IEDelayCall(_timeMove, () =>
                     {
-                        _movement.Move(transform, direction, _distance, _timeMove, _historyMove);
-                        if (transform.childCount == 1)
+                        _movement.MoveParent(transform, direction, _distance, _timeMove);
+                        if (transform.childCount <= 1)
                         {
                             _collider.enabled = false;
                         }
@@ -162,48 +146,7 @@ namespace LongNC.Cube
                     _coroutine = StartCoroutine(IEDelayCall(_timeMove, () =>
                     {
                         _collider.enabled = false;
-                        for (var i = 0; i < transform.childCount; ++i)
-                        {
-                            var direct = transform.GetChild(i).position - transform.position;
-                            direct = direct.normalized;
-                            if (Mathf.Abs(direct.x) > 0.7f) direct.x = direct.x > 0 ? 1 : -1;
-                            else direct.x = 0;
-                            if (Mathf.Abs(direct.y) > 0.7f) direct.y = direct.y > 0 ? 1 : -1;
-                            else direct.y = 0;
-                            if (Mathf.Abs(direct.z) > 0.7f) direct.z = direct.z > 0 ? 1 : -1;
-                            else direct.z = 0;
-                            if (direct == Vector3.back)
-                            {
-                                continue;
-                            }
-                            transform.GetChild(i).gameObject.SetActive(false);
-                            var childRes = direct switch
-                            {
-                                var d when d == Vector3.left => Direction.Left,
-                                var d when d == Vector3.right => Direction.Right,
-                                var d when d == Vector3.up => Direction.Up,
-                                var d when d == Vector3.down => Direction.Down,
-                                _ => Direction.None
-                            };
-                            var newObj = new GameObject(name: "Cube Clone")
-                            {
-                                transform =
-                                {
-                                    parent = transform.parent,
-                                    position = transform.position,
-                                    rotation = transform.rotation,
-                                    localScale = transform.localScale,
-                                }
-                            };
-                            for (var j = 0; j < transform.childCount; ++j)
-                            {
-                                var transChild = transform.GetChild(j);
-                                var child = PoolingManager.Spawn(transChild.gameObject, transChild.position, transChild.rotation, newObj.transform); 
-                                child.SetActive(i == j);
-                                child.transform.localScale = Vector3.one;
-                            }
-                            _movement.Move(newObj.transform, childRes, _distance, _timeMove, _historyMove);
-                        }
+                        _movement.MoveAll(transform, _distance, _timeMove);
                     }));
                 }
             }
@@ -213,6 +156,15 @@ namespace LongNC.Cube
             callback?.Invoke();
             yield return WaitForSecondCache.Get(time);
             _coroutine = null;
+        }
+        
+        public void Reverse()
+        {
+            if (_coroutine == null)
+            {
+                _movement.MoveReverseParent(transform, _cubeReverse.transform, _collider);
+                LevelManager.Instance.ReverseCube(transform);
+            }
         }
         
 #if UNITY_EDITOR

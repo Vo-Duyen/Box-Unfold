@@ -57,6 +57,8 @@ namespace LongNC.Manager
         [FoldoutGroup(CurLevelString)]
         [SerializeField]
         private GameObject _maskBackgroundPrefab;
+
+        private bool _isShowTip;
         
         private readonly ILevelLoader _levelLoader = new LevelLoader();
         private CellType[,] _gridClone;
@@ -67,6 +69,10 @@ namespace LongNC.Manager
             new Vector3(-1, 0),
             new Vector3(1, 0),
         };
+
+        private float _timeMove = 0.2f;
+
+        private Dictionary<Transform, Stack<List<(int, int)>>> _dataReverse = new Dictionary<Transform, Stack<List<(int, int)>>>();
 
         private Dictionary<Transform, (int x, int y)> _dictIndexCube = new Dictionary<Transform, (int x, int y)>();
         private int _cntCheckWinLevel;
@@ -143,6 +149,20 @@ namespace LongNC.Manager
             };
 
             _cntCheckWinLevel = _curLevelData.cntCheckWinLevel;
+            _isShowTip = false;
+            switch (_curLevelData.isShowText)
+            {
+                case -1:
+                    UIManager.Instance.ShowTip(false, _curLevelData.textShow);
+                    break;
+                case 0:
+                    UIManager.Instance.ShowTip(true, _curLevelData.textShow);
+                    break;
+                case 1:
+                    UIManager.Instance.ShowTip(false, _curLevelData.textShow);
+                    _isShowTip = true;
+                    break;
+            }
             
             var grid = _curLevelData.gridCells;
 
@@ -185,6 +205,11 @@ namespace LongNC.Manager
                             posCell.z = -0.7f;
                             var trans = PoolingManager.Spawn(_cubePrefab, posCell, Quaternion.identity, cubeObj.transform);
                             _dictIndexCube[trans.transform] = (i, j);
+                            _dataReverse[trans.transform] = new Stack<List<(int, int)>>();
+                            _dataReverse[trans.transform].Push(new List<(int, int)>()
+                            {
+                                (i, j)
+                            });
                             break;
                     }
                 }
@@ -227,6 +252,19 @@ namespace LongNC.Manager
 
                 CheckLevel(1);
                 
+                _dataReverse[trans].Push(new List<(int, int)>()
+                {
+                    {
+                        (newIndex.Item1, newIndex.Item2)
+                    }
+                });
+
+                if (_isShowTip && _cntCheckWinLevel == 2)
+                {
+                    _isShowTip = false;
+                    UIManager.Instance.ShowTip(true, _curLevelData.textShow);
+                }
+                
                 return true;
             }
             
@@ -235,6 +273,7 @@ namespace LongNC.Manager
 
         public bool CheckMove(Transform target, Direction[] directions)
         {
+            var arrReverse = new List<(int, int)>();
             // Debug.Log($"Check Move 2 + {directions.Length}");
             foreach (var direction in directions)
             {
@@ -271,9 +310,13 @@ namespace LongNC.Manager
                 _gridClone[_dictIndexCube[target].x, _dictIndexCube[target].y] = CellType.Active;
                 _gridClone[newIndex.Item1, newIndex.Item2] = CellType.Active;
                 // _dictIndexCube[target] = newIndex;
+                
+                arrReverse.Add((newIndex.Item1, newIndex.Item2));
 
             }
             CheckLevel(directions.Length);
+            
+            _dataReverse[target].Push(arrReverse);
             
             return true;
         }
@@ -292,12 +335,33 @@ namespace LongNC.Manager
             }
         }
 
-        private void ResizeToScreen(Transform trans, (int height, int width) size)
+        public void ReverseCube(Transform cubeTrans)
         {
-            if (size is { height: 1920, width: 1080 }) return;
-            var curScale = trans.localScale;
-            curScale.x *= size.width / 1080f;
-            trans.localScale = curScale * 1.2f;
+            var sequence = DOTween.Sequence();
+            var totalTime = 0f;
+            while (_dataReverse[cubeTrans].Count > 1)
+            {
+                var data = _dataReverse[cubeTrans].Pop();
+                var timeMove = _timeMove;
+                totalTime += timeMove;
+                sequence.AppendInterval(totalTime);
+                foreach (var (i, j) in data)
+                {
+                    sequence.JoinCallback(() =>
+                    {
+                        _gridClone[i, j] = CellType.Inactive;
+                        CheckLevel(-1);
+                    });
+                }
+            }
+            
+            sequence?.OnComplete(() =>
+            {
+                _dictIndexCube[cubeTrans] = _dataReverse[cubeTrans].Peek()[0];
+                _gridClone[_dictIndexCube[cubeTrans].x, _dictIndexCube[cubeTrans].y] = CellType.Cube;
+            });
+
+            sequence?.Play();
         }
         
 #if UNITY_EDITOR

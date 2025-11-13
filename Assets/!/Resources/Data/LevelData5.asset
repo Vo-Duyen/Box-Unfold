@@ -183,23 +183,38 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-    - Name: lengthBackground
-      Entry: 7
-      Data: System.ValueTuple`2[[System.Int32, mscorlib],[System.Int32, mscorlib]],
-        mscorlib
-    - Name: Item1
-      Entry: 3
-      Data: 40
-    - Name: Item2
-      Entry: 3
-      Data: 20
-    - Name: 
-      Entry: 8
-      Data: 
     - Name: _rows
       Entry: 3
       Data: 7
     - Name: _columns
       Entry: 3
       Data: 7
+    - Name: timeCounter
+      Entry: 4
+      Data: 90
+    - Name: isShowText
+      Entry: 3
+      Data: 1
+    - Name: textShow
+      Entry: 1
+      Data: Tap to unfold!
+    - Name: posText
+      Entry: 7
+      Data: UnityEngine.Vector3, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 4
+      Data: 2
+    - Name: 
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
   cntCheckWinLevel: 5
+  timeCounter: 90
+  isShowText: 1
+  textShow: Tap to unfold!
+  posText: {x: 0, y: 2, z: 0}

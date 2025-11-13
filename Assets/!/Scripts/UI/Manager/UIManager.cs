@@ -254,5 +254,10 @@ namespace LongNC.UI.Manager
                 target.DOScale(scale * 1.2f, 0.1f).SetEase(Ease.Linear).SetLoops(2, LoopType.Yoyo).SetUpdate(true);
             }
         }
+
+        public void ShowTip(bool isShow, string tip)
+        {
+            _gameplayUI?.ShowTip(isShow, tip);
+        }
     }
 }

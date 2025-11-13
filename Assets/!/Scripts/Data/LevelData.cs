@@ -51,6 +51,18 @@ namespace LongNC.Data
         public float timeCounter = 90f;
         
 #if UNITY_EDITOR
+        [FoldoutGroup(TimeString)]
+        [OdinSerialize]
+#endif
+        public int isShowText = -1;
+        
+#if UNITY_EDITOR
+        [FoldoutGroup(TimeString)]
+        [OdinSerialize]
+#endif
+        public string textShow;
+        
+#if UNITY_EDITOR
         [FoldoutGroup(GridString)]
         [Button]
         private void SetupGrid()
